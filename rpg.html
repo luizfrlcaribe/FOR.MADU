@@ -1,0 +1,2963 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FALLEN - O RPG</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #000000;
+            color: #ffffff;
+            font-family: 'Cinzel', serif;
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        header {
+            background: #000000;
+            padding: 20px;
+            border-bottom: 2px solid #333333;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        nav {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            max-width: 1200px;
+            margin: 0 auto;
+            gap: 40px;
+        }
+
+        .logo {
+            font-size: 32px;
+            font-weight: bold;
+            color: #ffffff;
+            letter-spacing: 2px;
+            text-align: center;
+            line-height: 1;
+        }
+
+        nav ul {
+            display: flex;
+            gap: 30px;
+            list-style: none;
+        }
+
+        nav a {
+            color: #ffffff;
+            text-decoration: none;
+            text-transform: uppercase;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.3s;
+            padding: 8px 12px;
+            border: 1px solid transparent;
+        }
+
+        nav ul a:hover {
+            color: #ffffff;
+            border-bottom: 2px solid #ffffff;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        section {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        h1, h2, h3 {
+            font-family: 'Cinzel', serif;
+            color: #ffffff;
+            letter-spacing: 1px;
+        }
+
+        h1 {
+            font-size: 84px;
+            margin-bottom: 20px;
+            text-shadow: 0 10px 30px rgba(0, 0, 0, 0.85);
+        }
+
+        h2 {
+            font-size: 42px;
+            margin-bottom: 30px;
+        }
+
+        h3 {
+            font-size: 24px;
+            margin-bottom: 15px;
+        }
+
+        p {
+            color: #cccccc;
+            font-size: 16px;
+            line-height: 1.8;
+            margin-bottom: 15px;
+        }
+
+        .hero {
+            text-align: center;
+            padding: 60px 20px;
+        }
+
+        .hero p {
+            max-width: 700px;
+            margin: 0 auto 30px;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #070707, #222222);
+            color: #ffffff;
+            padding: 12px 24px;
+            border: 2px solid #444444;
+            border-radius: 6px;
+            cursor: pointer;
+            font-family: 'Cinzel', serif;
+            font-weight: 600;
+            text-transform: uppercase;
+            transition: all 0.3s;
+            margin: 10px;
+            display: inline-block;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(255, 255, 255, 0.1);
+            border-color: #ffffff;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            color: #ffffff;
+            font-weight: bold;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            font-size: 13px;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 10px 10px;
+            background: #1a1a1a;
+            border: 1px solid #white;
+            color: #ffffff;
+            border-radius: 5px;
+            font-family: 'Cinzel', serif;
+            font-size: 14px;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: #888888;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+        }
+
+        .creation-form {
+            background: #1a1a1a;
+            padding: 30px;
+            border-radius: 10px;
+            border: 1px solid #333333;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .character-preview {
+            background: #000000;
+            padding: 25px;
+            border-radius: 10px;
+            margin-top: 30px;
+            border: 1px solid #333333;
+        }
+
+        .character-preview h3 {
+            color: #ffffff;
+            margin-bottom: 15px;
+        }
+
+        .attribute-distributor {
+            background: #000000;
+            padding: 20px;
+            border-radius: 10px;
+            border: 1px solid #333333;
+            margin-bottom: 20px;
+        }
+
+        .attribute-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding: 10px;
+            background: #1a1a1a;
+            border-radius: 5px;
+            border-left: 3px solid #666666;
+        }
+
+        .attribute-controls {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .attr-btn {
+            background: #222222;
+            color: #ffffff;
+            border: 1px solid #444444;
+            padding: 5px 10px;
+            cursor: pointer;
+            border-radius: 3px;
+            font-weight: bold;
+            transition: all 0.2s;
+        }
+
+        .attr-btn:hover {
+            background: #333333;
+            border-color: #ffffff;
+        }
+
+        .attribute-controls span {
+            min-width: 40px;
+            text-align: center;
+            color: #ffffff;
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        .stat-bar {
+            background: #1a1a1a;
+            height: 20px;
+            border-radius: 5px;
+            margin: 10px 0;
+            overflow: hidden;
+            border: 1px solid #444444;
+        }
+
+        .stat-fill {
+            background: linear-gradient(90deg, #888888, #444444);
+            height: 100%;
+            transition: width 0.3s;
+        }
+
+        .classes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin: 40px 0;
+        }
+
+        .class-card {
+            background: linear-gradient(135deg, #1a1a1a, #222222);
+            padding: 30px;
+            border-radius: 10px;
+            border: 2px solid #333333;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+        }
+
+        .class-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(255, 255, 255, 0.1);
+            border-color: #666666;
+        }
+
+        .class-header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .class-icon {
+            font-size: 28px;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 10px;
+            background: radial-gradient(circle at 30% 30%, #888888, #333333);
+            box-shadow: 0 6px 18px rgba(255, 255, 255, 0.1);
+        }
+
+        .class-tag {
+            font-size: 11px;
+            color: #aaaaaa;
+            border: 1px solid #aaaaaa;
+            padding: 4px 8px;
+            border-radius: 5px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .class-card h3 {
+            color: #ffffff;
+            margin-bottom: 12px;
+        }
+
+        .class-card p {
+            font-size: 14px;
+            color: #cccccc;
+            margin-bottom: 15px;
+        }
+
+        .special {
+            background: linear-gradient(135deg, #2a2a2a, #1a1a1a);
+            margin-top: 15px;
+            padding: 12px;
+            border-radius: 5px;
+            border-left: 3px solid #aaaaaa;
+            color: #ffffff;
+            font-size: 12px;
+        }
+
+        .races-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 20px;
+            margin: 40px 0;
+        }
+
+        .race-card {
+            background: linear-gradient(135deg, #1a1a1a, #222222);
+            padding: 22px;
+            border-radius: 10px;
+            border-left: 4px solid #444444;
+            transition: all 0.3s;
+        }
+
+        .race-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(255, 255, 255, 0.1);
+            border-left-color: #888888;
+        }
+
+        .race-card h3 {
+            color: #ffffff;
+            font-size: 20px;
+            margin-bottom: 8px;
+        }
+
+        .race-desc {
+            color: #cccccc;
+            font-size: 13px;
+            margin-bottom: 12px;
+            line-height: 1.5;
+        }
+
+        .race-bonus {
+            background: #000000;
+            padding: 12px;
+            border-radius: 5px;
+            border: 1px solid #333333;
+            font-size: 12px;
+        }
+
+        .race-bonus strong {
+            color: #ffffff;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .race-bonus p {
+            color: #cccccc;
+            margin: 5px 0;
+            font-size: 12px;
+        }
+
+        .game-container {
+            display: grid;
+            grid-template-columns: 1fr 3fr 1fr;
+            gap: 20px;
+            margin: 40px 0;
+        }
+
+        .sidebar {
+            background: #1a1a1a;
+            padding: 20px;
+            border-radius: 10px;
+            border: 1px solid #333333;
+        }
+
+        .sidebar h3 {
+            color: #ffffff;
+            margin-bottom: 15px;
+            border-bottom: 1px solid #333333;
+            padding-bottom: 10px;
+        }
+
+        .stat-item {
+            background: #000000;
+            padding: 12px;
+            margin-bottom: 12px;
+            border-radius: 5px;
+            border-left: 3px solid #666666;
+            color: #cccccc;
+            font-size: 13px;
+        }
+
+        .game-area {
+            background: #000000;
+            padding: 30px;
+            border-radius: 10px;
+            border: 2px solid #333333;
+            text-align: center;
+        }
+
+        .battle-area {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.05));
+            padding: 25px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border: 1px solid #333333;
+        }
+
+        .enemy-stats {
+            background: #1a1a1a;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            color: #cccccc;
+            font-size: 14px;
+        }
+
+        .message-log {
+            background: #000000;
+            padding: 15px;
+            border-radius: 5px;
+            height: 250px;
+            overflow-y: auto;
+            border: 1px solid #333333;
+            margin-bottom: 20px;
+        }
+
+        .message {
+            margin-bottom: 8px;
+            font-size: 13px;
+            padding: 5px;
+            border-left: 2px solid #666666;
+            padding-left: 10px;
+            color: #cccccc;
+        }
+
+        .battle-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .attack-btn {
+            background: linear-gradient(135deg, #1a1a1a, #2a2a2a);
+            color: #ffffff;
+            padding: 12px;
+            border: 2px solid #444444;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            font-family: 'Cinzel', serif;
+            text-transform: uppercase;
+            font-size: 12px;
+            transition: all 0.2s;
+        }
+
+        .attack-btn:hover:not(:disabled) {
+            box-shadow: 0 10px 20px rgba(255, 255, 255, 0.1);
+            background: linear-gradient(135deg, #2a2a2a, #1a1a1a);
+            border-color: #ffffff;
+        }
+
+        .attack-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .lore-container {
+            margin: 40px 0;
+        }
+
+        .lore-section {
+            background: linear-gradient(135deg, #1a1a1a, #222222);
+            padding: 30px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            border-left: 4px solid #444444;
+        }
+
+        .lore-section h3 {
+            color: #ffffff;
+            font-size: 24px;
+            margin-bottom: 15px;
+        }
+
+        .lore-section p {
+            line-height: 1.8;
+            color: #cccccc;
+        }
+
+        footer {
+            text-align: center;
+            padding: 25px;
+            color: #999;
+            margin-top: 40px;
+            border-top: 1px solid #333333;
+        }
+
+        .character-sheet {
+            font-family: 'Courier New', monospace;
+            background: #0f0f0f;
+            padding: 30px;
+            border: 1px solid #444;
+            border-radius: 5px;
+            color: #ccc;
+            white-space: pre;
+            line-height: 1.4;
+            max-width: 800px;
+            margin: 0 auto;
+            overflow-x: auto;
+            box-shadow: 0 0 20px rgba(0,0,0,0.8);
+        }
+
+        .sheet-divider {
+            color: #666;
+            margin: 15px 0;
+            text-align: center;
+        }
+
+        @media (max-width: 768px) {
+            .game-container {
+                grid-template-columns: 1fr;
+            }
+
+            nav ul {
+                gap: 15px;
+                flex-wrap: wrap;
+            }
+
+            h1 {
+                font-size: 48px;
+            }
+
+            .classes-grid,
+            .races-container {
+                grid-template-columns: 1fr;
+            }
+
+            .battle-buttons {
+                grid-template-columns: 1fr;
+            }
+
+            .character-sheet {
+                font-size: 11px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <a class="logo" onclick="showSection('home')" style="text-decoration: none; cursor: pointer;">
+                <div style="font-size: 24px; margin-bottom: 5px;">
+                    <span style="color: #8702b4;">☽</span>
+                    <span style="color: #00ffff;">♢</span>
+                    <span style="color: #981010;">♘</span>
+                    <span style="background: linear-gradient(90deg, red, orange, yellow, green, blue, indigo, violet); -webkit-background-clip: text; color: transparent;">✰</span>
+                    <span style="color: #ffffff;">✙</span>
+                    <span style="color: #ffd700; text-shadow: 0 0 5px #ffd700, 0 0 10px #ffaa00;">🜁</span>
+                    <span style="color: #00ff00;">♧</span>
+                </div>
+                 𝕱𝖆𝖑𝖑𝖊𝖓 
+            </a>
+            <ul>
+                <li><a onclick="showSection('home')">Início</a></li>
+                <li><a onclick="showSection('classes')">Classes</a></li>
+                <li><a onclick="showSection('routes')">Rotas</a></li>
+                <li><a onclick="showSection('races')">Raças</a></li>
+                <li><a onclick="showSection('create')">Criar</a></li>
+                <li><a onclick="showSection('elementares')">Elementares</a></li>
+                <li><a onclick="showSection('lore')">História</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="container">
+        <!-- Home Section -->
+        <section id="home" class="active">
+            <div class="hero">
+                <h1>𝕱𝖆𝖑𝖑𝖊𝖓</h1>
+                <img src="https://cdn.discordapp.com/attachments/1298273237372764273/1469514250119676056/Screenshot_20260206_230233_WhatsApp.jpg?ex=6987ef4b&is=69869dcb&hm=09233dcea77942256567a1f5a26d34041b88f67033d24f43a38bb24fb39010cb" alt="Banner Fallen RPG" style="max-width: 100%; height: auto; margin-bottom: 30px; border-radius: 10px; border: 2px solid #000000; box-shadow: 0 0 15px rgba(5, 5, 5, 0.3);">
+                <p>Uma Aventura RPG de Fantasia Sombria</p>
+                <p>Em um mundo envolvido em escuridão, levante-se das cinzas e torne-se uma lenda.</p>
+                <button class="btn" onclick="showSection('create')">Comece Sua Aventura</button>
+                <button class="btn" onclick="showSection('lore')">Descubra a História</button>
+            </div>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 25px; margin: 40px 0;">
+                <div class="class-card">
+                    <div class="class-header">
+                        <div class="class-icon"><span style="color: #8702b4;">☽</span></div>
+                        <div class="class-tag">Sombras</div>
+                    </div>
+                    <h3>Nocturne</h3>
+                    <p>Mestre da escuridão e magia das sombras.</p>
+                </div>
+                <div class="class-card">
+                    <div class="class-header">
+                        <div class="class-icon"><span style="color: #981010;">♘</span></div>
+                        <div class="class-tag">Força</div>
+                    </div>
+                    <h3>Brutamonte</h3>
+                    <p>Guerreiro de força bruta avassaladora.</p>
+                </div>
+                <div class="class-card">
+                    <div class="class-header">
+                        <div class="class-icon"><span style="color: #ffd700; text-shadow: 0 0 5px #ffd700, 0 0 10px #ffaa00;">🜁</span></div>
+                        <div class="class-tag">Energia</div>
+                    </div>
+                    <h3>Pulsar</h3>
+                    <p>Manipulador de energia pulsante e vibração.</p>
+                </div>
+                <div class="class-card">
+                    <div class="class-header">
+                        <div class="class-icon"><span style="color: #00ff00;">♧</span></div>
+                        <div class="class-tag">Sorte</div>
+                    </div>
+                    <h3>Afortunado</h3>
+                    <p>O "Afortunado" é a classe que leva ao pé da letra "1 em 1 milhão" aonde poucos tem no mundo. Como se de alguma forma um erro no sistema que se cria sozinho e se fornece para algum sortudo, por isso essa classe recebe esse nome — para transmitir o quão sortudo alguém é de ter ela.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Character Creation Section -->
+        <section id="create">
+            <h2>⚔️ Crie Seu Personagem</h2>
+            <div class="creation-form">
+                <div class="form-group">
+                    <label>Nome do Personagem</label>
+                    <input type="text" id="charName" placeholder="Digite o nome do seu personagem">
+                </div>
+
+                <div class="form-group">
+                    <label>Selecione a Classe</label>
+                    <select id="charClass" onchange="updateRoutes(); updatePreview()">
+                        <option value="">— Selecione a Classe —</option>
+                        <option value="nocturne">Nocturne - Mestre da Escuridão</option>
+                        <option value="brutamonte">Brutamonte - Força Bruta</option>
+                        <option value="perspicaz">Perspicaz - Intelecto Aguçado</option>
+                        <option value="rammus">Rammus - Guardião Blindado</option>
+                        <option value="sazonal">Sazonal - Evento Raro</option>
+                        <option value="pulsar">Pulsar - Manipulador de Energia</option>
+                        <option value="afortunado">Afortunado - Especial de Sorteio</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Selecione a Rota</label>
+                    <select id="charRoute" onchange="updateRouteAbilities(); updatePreview()" disabled>
+                        <option value="">— Selecione a Classe Primeiro —</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Habilidade de Rota</label>
+                    <select id="charRouteAbility" disabled>
+                        <option value="">— Selecione a Rota Primeiro —</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Selecione o Nível</label>
+                    <select id="charLevel" onchange="updatePreview()">
+                        <option value="1">Nível 1</option>
+                        <option value="2">Nível 2</option>
+                        <option value="3">Nível 3</option>
+                        <option value="4">Nível 4</option>
+                        <option value="5">Nível 5</option>
+                        <option value="6">Nível 6</option>
+                        <option value="7">Nível 7</option>
+                        <option value="8">Nível 8</option>
+                        <option value="9">Nível 9</option>
+                        <option value="10">Nível 10</option>
+                        <option value="11">Nível 11</option>
+                        <option value="12">Nível 12</option>
+                        <option value="13">Nível 13</option>
+                        <option value="14">Nível 14</option>
+                        <option value="15">Nível 15</option>
+                        <option value="16">Nível 16</option>
+                        <option value="17">Nível 17</option>
+                        <option value="18">Nível 18</option>
+                        <option value="19">Nível 19</option>
+                        <option value="20">Nível 20</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Selecione a Raça</label>
+                    <select id="charRace" onchange="updatePreview()">
+                        <option value="">— Selecione a Raça —</option>
+                        <option value="humano">Humano - Equilibrado</option>
+                        <option value="dhampiro">Dhampiro - Vampírico</option>
+                        <option value="androide">Androide - Artificial</option>
+                        <option value="wraithborn">Wraithborn - Espectral</option>
+                        <option value="elanide">Elánide - Conhecedor</option>
+                        <option value="veilborn">Veilborn - Presságio</option>
+                        <option value="asura">Asura - Demoniaco</option>
+                        <option value="gojin">Gojin - Extraordinário</option>
+                        <option value="gemini">Gemini - Gêmeos</option>
+                        <option value="lythari">Lythari - Extraplanar</option>
+                        <option value="tidones">Tide Ones - Aquáticos</option>
+                        <option value="coccinus">Coccinus - Flamejante</option>
+                        <option value="antro">Antro - Híbrido</option>
+                        <option value="skinfalls">Skin Falls - Transformador</option>
+                        <option value="findatur">Findatur - Venenoso</option>
+                        <option value="scarydino">Scary-Dino - Reptiliano</option>
+                        <option value="bobo">Bobo - Sorte</option>
+                        <option value="pop">Pop - Manipulador</option>
+                        <option value="reencarnado">Reencarnado - Memória</option>
+                        <option value="pedrado">Pedrado - Mineral</option>
+                        <option value="konchu">Konchu - Inseto</option>
+                        <option value="kessen">Kessen - Samurai</option>
+                        <option value="obscureelandide">Obscure Elánide - Sombrio</option>
+                        <option value="imo">Imo - Paradoxal</option>
+                        <option value="nox">Nox - Noturno</option>
+                        <option value="coyote">Coyote - Aventureiro</option>
+                        <option value="qareen">Qareen - Mágico</option>
+                        <option value="aggelus">Aggelus - Alado Divino</option>
+                        <option value="serpens">Serpens - Serpentino</option>
+                        <option value="anciao">Ancião - Velho</option>
+                        <option value="faciem">Faciem - Mascarado</option>
+                        <option value="babydoll">Babydoll - Artificial</option>
+                        <option value="verdan">Verdan - Extraterrestre</option>
+                        <option value="infubus">Infubus - Híbrido Caótico</option>
+                        <option value="columen">Columen - Imortal</option>
+                        <option value="ignis">Ignis - Incendiário</option>
+                        <option value="fracti">Fracti - Paranormal</option>
+                        <option value="dwarf">Dwarf - Anão</option>
+                        <option value="eros">Eros - Alado</option>
+                        <option value="lirio">Lírio - Natural</option>
+                        <option value="osteon">Osteon - Esquelético</option>
+                        <option value="vicissim">Vicissim - Ressuscitado</option>
+                        <option value="golias">Golias - Gigante</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Apelido</label>
+                    <input type="text" id="charNickname" placeholder="Apelido do personagem">
+                </div>
+
+                <div class="form-group">
+                    <label>Data de Aniversário</label>
+                    <input type="text" id="charBirthday" placeholder="Ex: 15 de Outubro">
+                </div>
+
+                <div class="form-group">
+                    <label>Idade</label>
+                    <input type="number" id="charAge" placeholder="Idade">
+                </div>
+
+                <div class="form-group">
+                    <label>Físico</label>
+                    <input type="text" id="charPhysique" placeholder="Ex: Alto, magro, cicatriz no rosto...">
+                </div>
+
+                <div class="form-group">
+                    <label>Nacionalidade</label>
+                    <input type="text" id="charNationality" placeholder="Nacionalidade">
+                </div>
+
+                <div class="form-group">
+                    <label>Personalidade</label>
+                    <input type="text" id="charPersonality" placeholder="Traços de personalidade">
+                </div>
+
+                <div class="form-group">
+                    <label>Antecedente</label>
+                    <input type="text" id="charBackground" placeholder="História/Antecedente">
+                </div>
+
+                <div class="character-preview">
+                    <h3>Distribuição de Atributos</h3>
+                    <p>Você tem <strong id="pointsRemaining">7</strong> pontos para distribuir</p>
+                    
+                    <div style="margin-bottom: 15px; display: flex; gap: 10px; flex-wrap: wrap; justify-content: center;">
+                        <button class="btn" onclick="distributeRandomly()" style="font-size: 11px; padding: 8px 12px; margin: 0;">🎲 Aleatório</button>
+                        <button class="btn" onclick="distributeBuild('intelligence')" style="font-size: 11px; padding: 8px 12px; margin: 0;">🧠 Build Int</button>
+                        <button class="btn" onclick="distributeBuild('strength')" style="font-size: 11px; padding: 8px 12px; margin: 0;">💪 Build Força</button>
+                    </div>
+
+                    <div class="attribute-distributor">
+                        <div class="attribute-row">
+                            <label>Determinação</label>
+                            <div class="attribute-controls">
+                                <button class="attr-btn" onclick="addPoint('determination')">+</button>
+                                <span id="determValue">0</span>
+                                <button class="attr-btn" onclick="removePoint('determination')">-</button>
+                            </div>
+                        </div>
+                        
+                        <div class="attribute-row">
+                            <label>Agilidade</label>
+                            <div class="attribute-controls">
+                                <button class="attr-btn" onclick="addPoint('agility')">+</button>
+                                <span id="agilValue">0</span>
+                                <button class="attr-btn" onclick="removePoint('agility')">-</button>
+                            </div>
+                        </div>
+                        
+                        <div class="attribute-row">
+                            <label>Força</label>
+                            <div class="attribute-controls">
+                                <button class="attr-btn" onclick="addPoint('strength')">+</button>
+                                <span id="strengValue">0</span>
+                                <button class="attr-btn" onclick="removePoint('strength')">-</button>
+                            </div>
+                        </div>
+                        
+                        <div class="attribute-row">
+                            <label>Inteligência</label>
+                            <div class="attribute-controls">
+                                <button class="attr-btn" onclick="addPoint('intelligence')">+</button>
+                                <span id="intellValue">0</span>
+                                <button class="attr-btn" onclick="removePoint('intelligence')">-</button>
+                            </div>
+                        </div>
+                        
+                        <div class="attribute-row">
+                            <label>Constituição</label>
+                            <div class="attribute-controls">
+                                <button class="attr-btn" onclick="addPoint('constitution')">+</button>
+                                <span id="constiValue">0</span>
+                                <button class="attr-btn" onclick="removePoint('constitution')">-</button>
+                            </div>
+                        </div>
+                        
+                        <div class="attribute-row">
+                            <label>Presença</label>
+                            <div class="attribute-controls">
+                                <button class="attr-btn" onclick="addPoint('presence')">+</button>
+                                <span id="preseValue">0</span>
+                                <button class="attr-btn" onclick="removePoint('presence')">-</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="margin-top:12px; color:#ddd;">
+                        <strong>ND calculado:</strong> <span id="computedND">10</span>
+                    </div>
+                </div>
+
+                <div class="character-preview">
+                    <h3>Pré-visualização do Personagem</h3>
+                    <div id="preview">
+                        <p><strong>Nome:</strong> <span id="previewName">Herói sem Nome</span></p>
+                        <p><strong>Classe:</strong> <span id="previewClass">Guerreiro</span></p>
+                        <p><strong>Rota:</strong> <span id="previewRoute">-</span></p>
+                        <p><strong>Raça:</strong> <span id="previewRace">Humano</span></p>
+                        <p style="margin-top: 15px;"><strong>Nucleos (PV/PD/PP/ND):</strong></p>
+                        <p>PV: <span id="previewPV">0</span> | PD: <span id="previewPD">0</span></p>
+                        <p>PP: <span id="previewPP">0</span> | ND: <span id="previewND">0</span></p>
+                    </div>
+                    <div id="classBonusesPreview" style="margin-top:12px; color:#ddd;"></div>
+                </div>
+
+                <button class="btn" onclick="createCharacter()" style="margin-top: 20px; width: 100%;">Criar Personagem</button>
+            </div>
+        </section>
+
+        <!-- Classes Section -->
+        <section id="classes">
+            <h2>⚔️ Escolha Sua Classe</h2>
+            <div class="classes-grid">
+                <div class="class-card">
+                    <div class="class-header">
+                        <div class="class-icon"><span style="color: #8702b4;">☽</span></div>
+                        <div class="class-tag">Sombras / Ocultismo</div>
+                    </div>
+                    <h3><span style="color: #8702b4;">☽</span> NOCTURNE <span style="color: #8702b4;">☾</span></h3>
+                    <p>O Nocturne é um estudioso e praticante das forças ocultas e do desconhecido, um esotérico. Ele dedica sua vida a compreender o paranormal, interagir com entidades espirituais e manipular energias além da compreensão mundana. Seja um exorcista que expulsa forças malignas, um cartomante que lê o destino nas cartas ou um ocultista que desvenda os segredos do além, o Nocturne sempre segue o chamado do mistério.</p>
+                    <ul>
+                        <li>ඞ Começa com <strong>12 de PV + Constituição</strong>. A cada novo nível upado, <strong>soma Força + Constituição</strong> no PV.</li>
+                        <li>ඞ Começa com <strong>24 de PP + Presença</strong>. A cada novo nível upado, <strong>soma Inteligência + Presença</strong> no PP.</li>
+                        <li>ඞ Começa com <strong>10 de PD + Inteligência</strong>. A cada novo nível upado, <strong>soma Constituição + Inteligência</strong> no PD.</li>
+                        <li>ඞ Começa com <strong>1 ponto bônus</strong> em Inteligência e em Presença ou Determinação.</li>
+                        <li>ඞ <em>-2 em 1D4 perícias físicas.</em></li>
+                    </ul>
+                    <p><strong>Proficiências:</strong> Armaduras Leves, Objetos Anômalos e Armas Simples.</p>
+                    <p><strong>Perícias treinadas:</strong> +2 Paranormal, +2 Vontade, +2 Anormalidade. (Perícias não mexem nos núcleos)</p>
+                </div>
+
+                <div class="class-card">
+                    <div class="class-header">
+                        <div class="class-icon"><span style="color: #00ffff;">♢</span></div>
+                        <div class="class-tag">Astúcia</div>
+                    </div>
+                    <h3><span style="color: #00ffff;">♢</span> PERSPICAZ <span style="color: #00ffff;">♢</span></h3>
+                    <p>O Perspicaz é um mestre da adaptação e da inteligência estratégica. Dotado de um raciocínio rápido e uma visão aguçada do mundo ao seu redor, ele sabe como analisar situações, antecipar problemas e encontrar soluções criativas. Seja um detetive, um especialista em disfarces, um estrategista ou simplesmente alguém que sempre está um passo à frente, o Perspicaz utiliza sua astúcia para virar o jogo a seu favor.</p>
+                    <ul>
+                        <li>ඞ Começa com <strong>16 de PV + Constituição</strong>. A cada novo nível upado, <strong>soma Força + Constituição</strong> no PV.</li>
+                        <li>ඞ Começa com <strong>14 de PP + Presença</strong>. A cada novo nível upado, <strong>soma Inteligência + Presença</strong> no PP.</li>
+                        <li>ඞ Começa com <strong>18 de PD + Inteligência</strong>. A cada novo nível, <strong>Soma Agilidade + Inteligência</strong> no PD.</li>
+                        <li>ඞ Começa com <strong>2 pontos bônus</strong> em Inteligência.</li>
+                    </ul>
+                    <p><strong>Proficiências:</strong> Armaduras Leves e Armas Simples.</p>
+                    <p><strong>Perícias treinadas:</strong> +2 em 4 perícias de Inteligência. (Perícias não mexem nos núcleos)</p>
+                </div>
+
+                <div class="class-card">
+                    <div class="class-header">
+                        <div class="class-icon"><span style="color: #981010;">♘</span></div>
+                        <div class="class-tag">Força / Resiliência</div>
+                    </div>
+                    <h3><span style="color: #981010;">♘</span> BRUTAMONTE <span style="color: #981010;">♘</span></h3>
+                    <p>O Brutamonte é a personificação da resistência e da força bruta. Seja como um guerreiro incansável, um lutador de rua ou simplesmente alguém que aprendeu a sobreviver em meio à adversidade, ele é a linha de frente de qualquer combate. Poucas coisas podem abalá-lo, pois sua determinação é tão forte quanto seus punhos.</p>
+                    <ul>
+                        <li>ඞ Começa com <strong>26 de PV + Constituição</strong>. A cada novo nível upado, <strong>soma Força + Constituição</strong> no PV.</li>
+                        <li>ඞ Começa com <strong>12 de PP + Presença</strong>. A cada novo nível soma <strong>Inteligência + Presença</strong> no PP.</li>
+                        <li>ඞ Começa com <strong>14 de PD + Constituição</strong>. A cada novo nível, <strong>soma Agilidade + Constituição</strong> no PD.</li>
+                        <li>ඞ Começa com <strong>1 ponto bônus</strong> em Força e em Constituição ou Agilidade.</li>
+                        <li>ඞ <em>-2 em 1D4 perícias de Inteligência.</em></li>
+                    </ul>
+                    <p><strong>Proficiências:</strong> Armaduras Leves, Armas Simples e Armas Táticas.</p>
+                    <p><strong>Perícias treinadas:</strong> +2 Luta, +2 Fortitude, +2 Reflexos. (Perícias não mexem nos núcleos)</p>
+                </div>
+
+                <div class="class-card">
+                    <div class="class-header">
+                        <div class="class-icon"><span style="color: #ffd700; text-shadow: 0 0 5px #ffd700, 0 0 10px #ffaa00;">🜁</span></div>
+                        <div class="class-tag">Energia / Pulso</div>
+                    </div>
+                    <h3><span style="color: #ffd700; text-shadow: 0 0 5px #ffd700, 0 0 10px #ffaa00;">🜁</span> PULSAR <span style="color: #ffd700; text-shadow: 0 0 5px #ffd700, 0 0 10px #ffaa00;">🜁</span></h3>
+                    <p>O "Pulsar" é a sensação que aqueles que habitam nessa classe têm, a sensação de uma pulsação interna que pouquíssimos sentem além do coração. Ter conhecimento de si mesmo, não do que é desse mundo e nem de outro mundo, mas de si mesmo — é prova absoluta de ter o mais absurdo dos conhecimentos. Penso, logo, existo.</p>
+                    <ul>
+                        <li>ඞ Começa com <strong>16 de PV + Constituição</strong>. A cada novo nível upado, <strong>soma Força + Constituição</strong> no PV.</li>
+                        <li>ඞ Começa com <strong>18 de PP + Presença</strong>. A cada novo nível soma <strong>Inteligência + Determinação</strong> no PP.</li>
+                        <li>ඞ Começa com <strong>14 de PD + Constituição</strong>. A cada novo nível, <strong>soma Agilidade + Constituição</strong> no PD.</li>
+                        <li>ඞ Começa com <strong>1 ponto bônus</strong> em Inteligência e Determinação.</li>
+                        <li>ඞ <em>-2 em 1D4 perícias escolhidas.</em></li>
+                    </ul>
+                    <p><strong>Proficiências:</strong> Armaduras Leves, Objetos Anômalos e Armas Simples.</p>
+                    <p><strong>Perícias treinadas:</strong> +2 Vontade, +2 Diplomacia, +2 Percepção. (Perícias não mexem nos núcleos)</p>
+                </div>
+
+                <div class="class-card">
+                    <div class="class-header">
+                        <div class="class-icon"><span style="background: linear-gradient(90deg, red, orange, yellow, green, blue, indigo, violet); -webkit-background-clip: text; color: transparent;">✰</span></div>
+                        <div class="class-tag">Ciclos / Evento</div>
+                    </div>
+                    <h3><span style="background: linear-gradient(90deg, red, orange, yellow, green, blue, indigo, violet); -webkit-background-clip: text; color: transparent;">✰</span> SAZONAL <span style="background: linear-gradient(90deg, red, orange, yellow, green, blue, indigo, violet); -webkit-background-clip: text; color: transparent;">✰</span></h3>
+                    <p>O "Sazonal" é a classe que leva ao pé da letra "1 vez ao ano" aonde pouquíssimos tem no mundo. Como se de alguma forma o universo escolheu uma única pessoa para ser tão especial quanto uma festividade do ano. Sistematicamente só pode acessar essa classe quando ganha uma rota Sazonal.</p>
+                    <ul>
+                        <li>ඞ Começa com <strong>17 de PV + Constituição</strong>. A cada novo nível upado, <strong>soma Força + Constituição</strong> no PV.</li>
+                        <li>ඞ Começa com <strong>19 de PP + Presença</strong>. A cada novo nível soma <strong>Presença + Determinação</strong> no PP.</li>
+                        <li>ඞ Começa com <strong>18 de PD + Agilidade</strong>. A cada novo nível, <strong>soma Agilidade + Constituição</strong> no PD.</li>
+                        <li>ඞ Começa com <strong>1 ponto bônus</strong> em Presença e Agilidade.</li>
+                    </ul>
+                    <p><strong>Proficiências:</strong> Armaduras Leves, Armas Simples e Armas Táticas ou Objetos Anômalos.</p>
+                    <p><strong>Perícias treinadas:</strong> +2 Acaso, +2 Diplomacia, +2 em duas perícias de sua escolha. (Perícias não mexem nos núcleos)</p>
+                </div>
+
+                <div class="class-card">
+                    <div class="class-header">
+                        <div class="class-icon"><span style="color: #ffffff;">✙</span></div>
+                        <div class="class-tag">Guardião / Evolução</div>
+                    </div>
+                    <h3><span style="color: #ffffff;">✙</span> RAMUS <span style="color: #ffffff;">✙</span></h3>
+                    <p>O "Ramus" é mais uma classe rara de se encontrar, porém mais acessível em comparação com o afortunado ou sazonal. Por que tão raro de se achar alguém com essa classe no mundo? Simples, pois não é um avanço que qualquer um obtém por querer – e sim por ser a classe ideal para aqueles que têm uma ligação forte com a própria raça da qual pertence ao ponto de evoluir por si mesmo.</p>
+                    <ul>
+                        <li>ඞ Começa com <strong>16 de PV + Constituição</strong>. A cada novo nível upado, <strong>soma Força + Constituição</strong> no PV.</li>
+                        <li>ඞ Começa com <strong>15 de PP + Presença</strong>. A cada novo nível soma <strong>Presença + Determinação</strong> no PP.</li>
+                        <li>ඞ Começa com <strong>16 de PD + Agilidade</strong>. A cada novo nível, <strong>soma Agilidade + Constituição</strong> no PD.</li>
+                        <li>ඞ Começa com <strong>1 ponto bônus</strong> em Constituição e Inteligência ou Determinação.</li>
+                        <li>ඞ <em>-2 em 1D6 perícias de Presença.</em></li>
+                    </ul>
+                    <p><strong>Proficiências:</strong> Armaduras Leves, Armas Simples e Armas Táticas ou Objetos Anômalos.</p>
+                    <p><strong>Perícias treinadas:</strong> +2 Fortitude, +2 Furtividade, +2 Linguagem. (Perícias não mexem nos núcleos)</p>
+                </div>
+
+                <div class="class-card">
+                    <div class="class-header">
+                        <div class="class-icon"><span style="color: #00ff00;">♧</span></div>
+                        <div class="class-tag">Especial de Sorteio</div>
+                    </div>
+                    <h3><span style="color: #00ff00;">♧</span> AFORTUNADO <span style="color: #00ff00;">♧</span></h3>
+                    <p>O "Afortunado" é a classe que leva ao pé da letra "1 em 1 milhão" aonde poucos tem no mundo. Como se de alguma forma um erro no sistema que se cria sozinho e se fornece para algum sortudo, por isso essa classe recebe esse nome — para transmitir o quão sortudo alguém é de ter ela.</p>
+                    <ul>
+                        <li>ඞ Começa com <strong>19 de PV + Constituição</strong>. A cada novo nível upado, <strong>soma Força + Constituição</strong> no PV.</li>
+                        <li>ඞ Começa com <strong>19 de PP + Presença</strong>. A cada novo nível soma <strong>Inteligência + Determinação</strong> no PP.</li>
+                        <li>ඞ Começa com <strong>16 de PD + Determinação</strong>. A cada novo nível, <strong>soma Agilidade + Constituição</strong> no PD.</li>
+                        <li>ඞ Começa com <strong>2 pontos bônus</strong> em Determinação.</li>
+                    </ul>
+                    <p><strong>Proficiências:</strong> Armaduras Leves, Armas Simples e Armas Táticas ou Objetos Anômalos.</p>
+                    <p><strong>Perícias treinadas:</strong> +2 Acaso, +2 Profissão, +2 em duas perícias de sua escolha.<br><span style="font-size: 0.9em; color: #aaaaaa;">[Caso Desbloqueie as rotas do Afortunado, adicione 1D8+Inteligência de perícias treinadas, podendo aprimorar o grau de treinamento das que já obtiver.]</span></p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Routes Section -->
+        <section id="routes">
+            <h2>🔮 Rotas de Classe</h2>
+            <p>As rotas são especializações profundas que definem o estilo de combate e magia do seu personagem. Selecione uma classe abaixo para ver as rotas disponíveis.</p>
+            
+            <div style="display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-bottom: 30px;">
+                <button class="btn" onclick="showClassRoutes('nocturne')">Nocturne</button>
+                <button class="btn" onclick="showClassRoutes('brutamonte')">Brutamonte</button>
+                <button class="btn" onclick="showClassRoutes('perspicaz')">Perspicaz</button>
+                <button class="btn" onclick="showClassRoutes('rammus')">Rammus</button>
+                <button class="btn" onclick="showClassRoutes('sazonal')">Sazonal</button>
+                <button class="btn" onclick="showClassRoutes('pulsar')">Pulsar</button>
+                <button class="btn" onclick="showClassRoutes('afortunado')">Afortunado</button>
+            </div>
+
+            <div id="routes-display" class="races-container">
+                <!-- Nocturne Routes -->
+                <div id="routes-nocturne" class="class-routes-group">
+                    <div class="race-card">
+                        <h3>CEIFADOR</h3>
+                        <p class="race-desc">O ceifador é o Nocturne focado no ataque, sabendo a fraqueza das criaturas paranormais e sendo caçador nato. Sua alma é literalmente sua arma, sendo capaz de aplicar maldições únicas nas armas.</p>
+                        <div class="race-bonus">
+                            <strong>Passiva: Defesa Maldita</strong>
+                            <p>• Pode usar paranormal no seu ND ao invés do Reflexo ou Fortitude.</p>
+                            <p>• Começa com uma "foice" (inquebrável, não ocupa inventário).</p>
+                            <p style="font-size: 0.9em; color: #888; margin-top: 5px;">Obs.: Não pode usar feitiço de Desolação e Limbo.</p>
+                            <strong style="margin-top: 10px; display: block; color: #ffffff;">Habilidades:</strong>
+                            <p><strong>Ceifar:</strong> Testes de Luta e Pontaria são substituídos por Paranormal. Treinamento em armas táticas. (3 PP: +2 Paranormal e dobro de dano em fantasmas).</p>
+                            <p><strong>Liberação:</strong> Recebe 3 feitiços e +1 em todos os atributos físicos.</p>
+                        </div>
+                    </div>
+
+                    <div class="race-card">
+                        <h3>VIAJANTE</h3>
+                        <p class="race-desc">O Viajante é o Nocturne dito como "Mago". Sua sabedoria é acima de muitos, ele entende o paranormal além de qualquer um. Usa um grimório para agilizar rituais.</p>
+                        <div class="race-bonus">
+                            <strong>Passiva: Contemplem o Mago</strong>
+                            <p>• Ganha um grimório (não ocupa inventário) com feitiços igual à Int.</p>
+                            <p>• +1 Int permanente concede novo feitiço.</p>
+                            <p style="font-size: 0.9em; color: #888; margin-top: 5px;">Obs.: Não inicia com feitiços de Desolação e Limbo.</p>
+                            <strong style="margin-top: 10px; display: block; color: #ffffff;">Habilidades:</strong>
+                            <p><strong>Barreira:</strong> (2 PP) Recebe 5 de proteção paranormal. Pode anular feitiço de outro Nocturne gastando mesmo PP.</p>
+                            <p><strong>Passar Páginas:</strong> Pode substituir feitiços conhecidos por novos encontrados (pergaminhos, etc).</p>
+                        </div>
+                    </div>
+
+                    <div class="race-card">
+                        <h3>ENCAPUZADO</h3>
+                        <p class="race-desc">Sua presença é literalmente tangível em uma névoa. Chamados de loucos, suas mentes estão sempre em barulhos como um ninho de vespas.</p>
+                        <div class="race-bonus">
+                            <strong>Passiva: Sanidade Sã</strong>
+                            <p>• Dano por sanidade reduzido em -3.</p>
+                            <p>• +4 em testes de vontade e resistência mental.</p>
+                            <p style="font-size: 0.9em; color: #888; margin-top: 5px;">Obs.: Só pode usar os feitiços dos elementos descritos nas habilidades.</p>
+                            <strong style="margin-top: 10px; display: block; color: #ffffff;">Habilidades:</strong>
+                            <p><strong>Desesperación:</strong> Cria névoa que permite usar elemento Desolação (1 feitiço, aumenta no Flow 6).</p>
+                            <p><strong>Zumbido:</strong> Cria névoa que permite usar elemento Limbo (1 feitiço, aumenta no Flow 6).</p>
+                        </div>
+                    </div>
+
+                    <div class="race-card">
+                        <h3>TRANSFORMADO</h3>
+                        <p class="race-desc">O Transfigurado é capaz de mudar de forma, assumindo as aparências e habilidades de animais e criaturas sobrenaturais. Possui a habilidade de adaptar seu corpo para enfrentar qualquer desafio.</p>
+                        <div class="race-bonus">
+                            <strong>Passiva: Evolução Deturpada</strong>
+                            <p>• A cada nível upado adicione +4 no PV.</p>
+                            <p>• Começa com uma Marca Paranormal da sua escolha.</p>
+                            <p>• Escolha 1 elemento dentre os 4 principais, sendo esse o único elemento que você irá utilizar.</p>
+                            <strong style="margin-top: 10px; display: block; color: #ffffff;">Habilidades:</strong>
+                            <p><strong>Brujería:</strong> Ganha um feitiço de transformação (custo 1 PP) e outro feitiço também de transformação (custo normal). (1º: Transformação duradoura; 2º: Mesmo elemento, não transformação; 3º: Desbloqueia no Flow 8).</p>
+                        </div>
+                    </div>
+
+                    <div class="race-card">
+                        <h3>OBSESSIVO</h3>
+                        <p class="race-desc">O Obsessivo é o Nocturne que não controla os instintos, é uma fera em forma de gente, muitas vezes sendo o mais voraz em campo de maneira que impressiona aos demais.</p>
+                        <div class="race-bonus">
+                            <strong>Passiva: Histeria</strong>
+                            <p>• Ganha +2 pontos de agilidade e força quando começa o jogo.</p>
+                            <p>• Remove o destreinamento nas perícias físicas.</p>
+                            <p>• Não é afetado pelos efeitos: Imobilizado, Pasmo e Lentidão.</p>
+                            <strong style="margin-top: 10px; display: block; color: #ffffff;">Habilidades:</strong>
+                            <p><strong>Necrófago:</strong> Eliminando adversários, recupera 2D6+1 de vida (a cada 2 de Flow, +1 dado).</p>
+                            <p><strong>Dilacerar:</strong> Causa +1D no dano físico e de feitiços. Se atacar oponentes abalados e gastar 2 PP, o bônus é de +2D.</p>
+                        </div>
+                    </div>
+
+                    <div class="race-card">
+                        <h3>ZIEL</h3>
+                        <p class="race-desc">O Ziel é o Nocturne que age na longa distância. Se destacando muito no campo de batalha, principalmente pela astúcia.</p>
+                        <div class="race-bonus">
+                            <strong>Passiva: Flashlight</strong>
+                            <p>• Usa paranormal em tudo que envolva Reflexos, Pontaria e Luta.</p>
+                            <p>• Começa com um "Arco" inquebrável (não conta no inventário). Criar munição gasta 2 PP; pode adicionar Int ao dano.</p>
+                            <p style="font-size: 0.9em; color: #888; margin-top: 5px;">Obs.: Não pode usar feitiço de Desolação e Limbo.</p>
+                            <strong style="margin-top: 10px; display: block; color: #ffffff;">Habilidades:</strong>
+                            <p><strong>Vene:</strong> (2 PP) Recebe +6 de armadura e +3 de dano corpo a corpo.</p>
+                            <p><strong>Pfeil:</strong> Ganha 3 feitiços com a temática envolvendo flechas, com qualquer elemento.</p>
+                        </div>
+                    </div>
+
+                    <div class="race-card">
+                        <h3>GARI</h3>
+                        <p class="race-desc">O Gari é o Nocturne que mais sabe sobre o conceito de "aventura", concentrando-se em utilizar objetos amaldiçoados e transformar eles em algo novo.</p>
+                        <div class="race-bonus">
+                            <strong>Passiva: Reciclar</strong>
+                            <p>• Capaz de encantar itens com elemento à escolha (exceto limbo/paranormal). Limite de itens/elementos igual a Inteligência ou Determinação.</p>
+                            <strong style="margin-top: 10px; display: block; color: #ffffff;">Habilidades:</strong>
+                            <p><strong>Limpeza:</strong> Transforma um item qualquer em uma arma, armadura ou escudo (desfaz ao fim da cena).</p>
+                            <p><strong>Transfusão:</strong> Sacrifica 1 PP para cada 4 PV recuperado (1D12+Int) e +2 para conceder 1 de vantagem (não acumulável).</p>
+                        </div>
+                    </div>
+
+                    <div class="race-card">
+                        <h3>DELINQUENTE</h3>
+                        <p class="race-desc">Você simplesmente não segue regras, completamente impulsivo e trapaceiro, mas o que não pode ser negado é sua astúcia de raposa.</p>
+                        <div class="race-bonus">
+                            <strong>Passiva: WildCard</strong>
+                            <p>• Dentre os 4 elementos permitidos, você tem uma roleta que define o próximo elemento que vai usar.</p>
+                            <p style="font-size: 0.9em; color: #888; margin-top: 5px;">Obs.: Não pode usar feitiço de Desolação e Limbo.</p>
+                            <strong style="margin-top: 10px; display: block; color: #ffffff;">Habilidades:</strong>
+                            <p><strong>Armadilhas:</strong> Pode criar feitiços de armadilha (gatilho automático). Custo: 2 PP ou PD para implantar.</p>
+                            <p><strong>Extensão:</strong> Ganha uma ação completa extra ao gastar 4 de PD ou uma coreografia com o feitiço (+2 PP).</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Brutamonte Routes -->
+                <div id="routes-brutamonte" class="class-routes-group" style="display: none;">
+                    <div class="race-card">
+                        <h3>PREDADOR</h3>
+                        <p class="race-desc">O Predador é uma força letal e silenciosa, especializado em rastrear, caçar e eliminar alvos com precisão mortal. Suas armas são suas amigas, você tem maestria total no manuseio delas.</p>
+                        <div class="race-bonus">
+                            <strong>Passiva: Temporada de caça</strong>
+                            <p>• Consegue acertar mais de um alvo caso ambos os alvos estejam próximos em alcance curto (o teste de luta feito para um vale para o outro).</p>
+                            <strong style="margin-top: 10px; display: block; color: #ffffff;">Habilidades:</strong>
+                            <p><strong>Zona:</strong> Gastando +2 de PD durante uma coreografia, pode escolher o melhor resultado.</p>
+                            <p><strong>Fatalidade:</strong> Aumenta o dano da arma em +1D e reduz a margem de crítico em -3 gastando apenas 2 de PD. (Necessita de armas).</p>
+                        </div>
+                    </div>
+
+                    <div class="race-card">
+                        <h3>GUARDIÃO</h3>
+                        <p class="race-desc">O guardião é duro na queda, resistente na linha de frente como uma muralha que nunca foge do combate. Se protege mas pode proteger os outros.</p>
+                        <div class="race-bonus">
+                            <strong>Passiva: Tanque de Guerra</strong>
+                            <p>• Quando a vida estiver cheia no início de uma batalha, ganha automaticamente 20 de PV temporários.</p>
+                            <p>• Quando sobe de nível, adiciona +4 no PV.</p>
+                            <strong style="margin-top: 10px; display: block; color: #ffffff;">Habilidades:</strong>
+                            <p><strong>Muralha:</strong> (4 PD) Pode cortar qualquer dano (não paranormal) pela metade.</p>
+                            <p><strong>Por Vocês:</strong> (2 PD) O inimigo faz teste de Vontade contra seu teste de Diplomacia; se perder, te ataca no lugar do aliado (alcance curto).</p>
+                        </div>
+                    </div>
+
+                    <div class="race-card">
+                        <h3>OLÍMPICO</h3>
+                        <p class="race-desc">O Olímpico se destaca em campo como heróico cheio de si, corajoso em qualquer situação aonde o medo é abundante.</p>
+                        <div class="race-bonus">
+                            <strong>Passiva: Caçador de Monstros</strong>
+                            <p>• +4 em luta e iniciativa ao iniciar combate contra criatura.</p>
+                            <p>• Margem de crítico ou ND do monstro descem em -3.</p>
+                            <strong style="margin-top: 10px; display: block; color: #ffffff;">Habilidades:</strong>
+                            <p><strong>Herói:</strong> (2 PD/PV) Ao enlouquecer, ganha 3 PP temporários e +3 pontos físicos temporários na cena (1x por cena).</p>
+                            <p><strong>Semideus:</strong> Arma ganha elemento Limbo. (8 PP) Dobro de dano com elemento contra criatura e +3 pontos físicos temporários.</p>
+                        </div>
+                    </div>
+
+                    <div class="race-card">
+                        <h3>CAPITÃO</h3>
+                        <p class="race-desc">O Capitão é o líder nato, um estrategista habilidoso e um combatente inspirador. Guia seus aliados com liderança e carisma.</p>
+                        <div class="race-bonus">
+                            <strong>Passiva: Um por Todos</strong>
+                            <p>• Se 2 aliados estiverem com ½ vida, recebe PV temporários (Nv3: 10, Nv6: 20, Nv9: 30).</p>
+                            <strong style="margin-top: 10px; display: block; color: #ffffff;">Habilidades:</strong>
+                            <p><strong>Por suas vidas:</strong> (4 PD) +4 na iniciativa e luta dos aliados até o fim da cena (1x por cena).</p>
+                            <p><strong>Liderança:</strong> (2 PD, Ação Livre) Inspira aliado, permitindo refazer um teste recém realizado.</p>
+                        </div>
+                    </div>
+
+                    <div class="race-card">
+                        <h3>BERSERK</h3>
+                        <p class="race-desc">Você é motivado pela raiva e vontade de destruir seus inimigos. A qualquer momento, o medo da sua equipe acaba se tornando você.</p>
+                        <div class="race-bonus">
+                            <strong>Passiva: Doom</strong>
+                            <p>• No primeiro dano recebido: -2 margem de crítico, +4 PV temporários.</p>
+                            <p>• Incapaz de realizar ações de concentração. Recebe a Marca do Berserk.</p>
+                            <strong style="margin-top: 10px; display: block; color: #ffffff;">Habilidades:</strong>
+                            <p><strong>Frenesi Sanguinário:</strong> Ao matar, ganha +2 luta/dano cumulativo (custo 1 PD/morte). +1D em Agilidade.</p>
+                            <p><strong>Fúria:</strong> (3 PD) Remove/imuniza efeitos mentais/físicos negativos, aumenta sangramento em 1. +2 dano por efeito retirado.</p>
+                        </div>
+                    </div>
+
+                    <div class="race-card">
+                        <h3>RUNNER</h3>
+                        <p class="race-desc">Você é alguém agitado, ágil e rápido. Demonstra que brutamontes podem ser extremamente rápidos também!</p>
+                        <div class="race-bonus">
+                            <strong>Passiva: Energético de Adrenalina</strong>
+                            <p>• Recebe +2 em Agilidade, perícias de Agilidade e deslocamento.</p>
+                            <p>• Adiciona Agilidade ao dano físico no lugar de Força.</p>
+                            <strong style="margin-top: 10px; display: block; color: #ffffff;">Habilidades:</strong>
+                            <p><strong>Flashbeat:</strong> Armas de 2 slots usam Agilidade no acerto/dano. (2 PD) Ação padrão extra.</p>
+                            <p><strong>Vibrante:</strong> (4 PP) Gasto de PD reduzido à metade e ganha 1 ação completa extra pelo resto da cena.</p>
+                        </div>
+                    </div>
+
+                    <div class="race-card">
+                        <h3>DEADMAN</h3>
+                        <p class="race-desc">O Deadman é o Brutamonte com maior resiliência mental e capacidade de mandar os mortos de volta para os túmulos.</p>
+                        <div class="race-bonus">
+                            <strong>Passiva: Triller</strong>
+                            <p>• Primeira redução a 0 PV na cena torna-se 1 PV após 2 turnos.</p>
+                            <p>• Aumenta crítico em +1 contra criaturas mortas-vivas.</p>
+                            <strong style="margin-top: 10px; display: block; color: #ffffff;">Habilidades:</strong>
+                            <p><strong>Quebra Crânio:</strong> (2 PD) Roda 1D8 para definir turnos até crítico automático.</p>
+                            <p><strong>Mais um pra cova:</strong> (2 PD) Ao matar morto-vivo, recupera 1D10+2 PP e aplica desvantagem no próximo.</p>
+                        </div>
+                    </div>
+
+                    <div class="race-card">
+                        <h3>VIGILANTE</h3>
+                        <p class="race-desc">Capacidade fria de eliminar alvos, como se a noite fosse seu alterego no comando.</p>
+                        <div class="race-bonus">
+                            <strong>Passiva: Murciélago</strong>
+                            <p>• Enxerga no escuro. Se cego, ganha +6 na percepção.</p>
+                            <strong style="margin-top: 10px; display: block; color: #ffffff;">Habilidades:</strong>
+                            <p><strong>La Noche:</strong> (4 PD) 2º ou 3º golpe vira crítico com efeito negativo (1D6 rodadas). De noite: metade do custo e 2 efeitos.</p>
+                            <p><strong>Cráneo:</strong> (2 PD) +1D no dano. De noite: crítico aplica 2 penalidades por 2 rodadas.</p>
+                        </div>
+                    </div>
+
+                    <div class="race-card">
+                        <h3>INVERNAL</h3>
+                        <p class="race-desc">O Invernal vem direto de forças especiais capacitadas especificamente para o abate, seja como um infiltrado ou na própria guerra.</p>
+                        <div class="race-bonus">
+                            <strong>Passiva: Vermelho Branco</strong>
+                            <p>• Estar envenenado ou com frio concede +1D em testes ofensivos/dano e +3 proteção.</p>
+                            <strong style="margin-top: 10px; display: block; color: #ffffff;">Habilidades:</strong>
+                            <p><strong>Friamente:</strong> Adiciona Det ou Pre ao dano físico/disparo. (2 PD) Ignora resistências.</p>
+                            <p><strong>Medalha:</strong> (4 PD) Aumenta crítico em +2. Se finalizar, dano causado vira Gloom e recupera metade do PD.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Perspicaz Routes -->
+                <div id="routes-perspicaz" class="class-routes-group" style="display: none;">
+                    <div class="race-card">
+                        <h3>PRAGA</h3>
+                        <p class="race-desc">Especialista em medicina e biotecnologia, treinado para curar e manipular efeitos de doenças. (Requer Medicina e Kit Médico).</p>
+                        <div class="race-bonus">
+                            <strong>Passiva: Pronto socorro</strong>
+                            <p>• Cura 2D10+Int (ação padrão + 2 PD). Fornece +1 dado em Constituição ao curado.</p>
+                            <strong style="margin-top: 10px; display: block; color: #ffffff;">Habilidades:</strong>
+                            <p><strong>Roda Roda efeito:</strong> (4 PD) Causa 2 efeitos negativos em inimigos ou positivos em aliados. (2 PD) Remove efeito negativo.</p>
+                            <p><strong>Anjo da Guarda:</strong> (Ação livre) Aproxima-se de aliado ferido. (8 PD) Revive aliado morto (MD 30 Medicina).</p>
+                        </div>
+                    </div>
+                    <div class="race-card">
+                        <h3>SENTINELA</h3>
+                        <p class="race-desc">Mestre das armas de fogo e precisão à distância. Elimina ameaças antes que se aproximem.</p>
+                        <div class="race-bonus">
+                            <strong>Passiva: Atirador Profissional</strong>
+                            <p>• Adiciona Int ao dano de disparo. Treinamento em armas táticas. Vantagem em disparar.</p>
+                            <strong style="margin-top: 10px; display: block; color: #ffffff;">Habilidades:</strong>
+                            <p><strong>Disparo Vital:</strong> (2 PD) Margem de crítico -4 em tiro de longa distância (>12m).</p>
+                            <p><strong>Bang:</strong> Armas simples de disparo usam Agi no dano e saque rápido. Armas táticas têm crítico +1 grau.</p>
+                        </div>
+                    </div>
+                    <div class="race-card">
+                        <h3>NINJA</h3>
+                        <p class="race-desc">Especialista em furtividade e espionagem. Usa o ambiente a seu favor.</p>
+                        <div class="race-bonus">
+                            <strong>Passiva: Ninjutsu</strong>
+                            <p>• Sem penalidades em Agilidade. Usa acrobacias para escalar. Treinado em armas táticas.</p>
+                            <strong style="margin-top: 10px; display: block; color: #ffffff;">Habilidades:</strong>
+                            <p><strong>Assassino:</strong> Luta/Pontaria com Furtividade. (4 PD) Ataque furtivo tem margem -3 e crítico +1.</p>
+                            <p><strong>Ghost:</strong> Esquiva com Furtividade. (4 PD) Camuflagem e teleporte curto (9m) após teste de furtividade.</p>
+                        </div>
+                    </div>
+                    <div class="race-card">
+                        <h3>INVENTOR</h3>
+                        <p class="race-desc">Gênio criativo, mestre das engenhocas. (Requer Antecedente Engenheiro/TI e Kit).</p>
+                        <div class="race-bonus">
+                            <strong>Passiva: "Mochilinha"</strong>
+                            <p>• Adiciona Int na Força para cálculo de inventário.</p>
+                            <strong style="margin-top: 10px; display: block; color: #ffffff;">Habilidades:</strong>
+                            <p><strong>Mestre Construtor:</strong> (2 PD) Reconstrói item ou adiciona modificação permanente (limite 2/cena).</p>
+                            <p><strong>Cinto de Utilidades:</strong> (3 PD/categoria) Puxa item do inventário como se já o tivesse (respeita slots).</p>
+                        </div>
+                    </div>
+                    <div class="race-card">
+                        <h3>OVERMARINE</h3>
+                        <p class="race-desc">Acostumados com aventuras marinhas, mergulhadores ou piratas.</p>
+                        <div class="race-bonus">
+                            <strong>Passiva: Pulsação Marinha</strong>
+                            <p>• Sem enjôo/frio no mar. +1 atributos físicos na água. Respiração somada com Flow.</p>
+                            <strong style="margin-top: 10px; display: block; color: #ffffff;">Habilidades:</strong>
+                            <p><strong>Canção das profundezas:</strong> (2 PD) Aliados ganham +1 dado em Vontade/Luta e remove condições.</p>
+                            <p><strong>Tiburón:</strong> (2 PD) +2 Reflexos, Luta, Furtividade, Iniciativa. Ataques causam sangramento (Fort MD 16).</p>
+                        </div>
+                    </div>
+                    <div class="race-card">
+                        <h3>JESTER</h3>
+                        <p class="race-desc">O Perspicaz mais imprevisível, o bobo da corte em campo.</p>
+                        <div class="race-bonus">
+                            <strong>Passiva: Riso Incontrolável</strong>
+                            <p>• Crítico (falha/sucesso) gera efeito aleatório (troca turno, penalidade inimigo, explosão ou cura).</p>
+                            <strong style="margin-top: 10px; display: block; color: #ffffff;">Habilidades:</strong>
+                            <p><strong>Carta na Manga:</strong> (2 PD) Com metade PV/PP, ganha +6 em qualquer perícia no turno.</p>
+                            <p><strong>Ri por Último:</strong> (1 PD/PP) Ao cair a 0 PV, roda 1D4 para reviver com efeitos variados.</p>
+                        </div>
+                    </div>
+                    <div class="race-card">
+                        <h3>CIENCEIRO</h3>
+                        <p class="race-desc">Utiliza conhecimento científico para criar artimanhas. (Requer Antecedente Ciência).</p>
+                        <div class="race-bonus">
+                            <strong>Passiva: Mente Fotográfica</strong>
+                            <p>• Mestre lembra detalhes esquecidos. Vantagem em Inteligência.</p>
+                            <strong style="margin-top: 10px; display: block; color: #ffffff;">Habilidades:</strong>
+                            <p><strong>Revolução Científica:</strong> Cria químicos (Cura, Aprimoramento ou Ofensivo) usando sistema de Sucata.</p>
+                        </div>
+                    </div>
+                    <div class="race-card">
+                        <h3>TABLIER</h3>
+                        <p class="race-desc">Talento culinário de alto nível. (Requer Cozinheiro e Kit).</p>
+                        <div class="race-bonus">
+                            <strong>Passiva: Petisco</strong>
+                            <p>• Cria comidas rápidas. +4 em Culinária.</p>
+                            <strong style="margin-top: 10px; display: block; color: #ffffff;">Habilidades:</strong>
+                            <p><strong>Fogão:</strong> (3 PD) Efeito em alimento. (4 PD) Resistência/Proteção 3 e +1 atributos.</p>
+                            <p><strong>Utensílio:</strong> Junta arma ao Kit (+2 dano). Aprimoramento concede modificação.</p>
+                        </div>
+                    </div>
+                    <div class="race-card">
+                        <h3>NOIR</h3>
+                        <p class="race-desc">Usuário de lógica e investigação. (Requer Investigação).</p>
+                        <div class="race-bonus">
+                            <strong>Passiva: Extração Social</strong>
+                            <p>• +4 Diplomacia e Investigação em interações.</p>
+                            <strong style="margin-top: 10px; display: block; color: #ffffff;">Habilidades:</strong>
+                            <p><strong>Olhos de Falcão:</strong> (2 PD) Reduz margem de crítico/sucesso em 2 (ou 4 com Vision).</p>
+                            <p><strong>Investigador Paranormal:</strong> (4 PD) Usa Paranormal com Investigação e ganha 6 Resistência Mental.</p>
+                        </div>
+                    </div>
+                    <div class="race-card">
+                        <h3>HACKER</h3>
+                        <p class="race-desc">Entende tudo de tecnologia. (Requer T.I. e Kit Tecnologia).</p>
+                        <div class="race-bonus">
+                            <strong>Passiva: Hacker Profissional</strong>
+                            <p>• Hackear é 1 ação completa com +2 bônus.</p>
+                            <strong style="margin-top: 10px; display: block; color: #ffffff;">Habilidades:</strong>
+                            <p><strong>Malware:</strong> Hackeia tecnologia. Glitch adiciona dano.</p>
+                            <p><strong>Superaquecimento:</strong> (3 PD) Explode dispositivos hackeados (Dano fogo/elétrico).</p>
+                            <p><strong>GBL:</strong> (6 PD) Onda sonora causa confusão em área.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pulsar Routes -->
+                <div id="routes-pulsar" class="class-routes-group" style="display: none;">
+                    <div class="race-card">
+                        <h3>MONGE</h3>
+                        <p class="race-desc">Destaca-se pela resiliência e força, punhos da justiça.</p>
+                        <div class="race-bonus">
+                            <strong>Passiva: Pacifista</strong>
+                            <p>• +4 agarrar/derrubar/empurrar/desarmar. Ataques não letais. +2 feitiços Primitivo.</p>
+                            <strong style="margin-top: 10px; display: block; color: #ffffff;">Habilidades:</strong>
+                            <p><strong>Golem:</strong> (5 PD) +5 Proteção/Resistência e 10 PV temporários na cena.</p>
+                            <p><strong>Ki:</strong> Gasto de PP recupera PV. Crítico concede +1 Agilidade acumulativo.</p>
+                        </div>
+                    </div>
+                    <div class="race-card">
+                        <h3>O-SHAMAN</h3>
+                        <p class="race-desc">Utiliza feitiços da natureza.</p>
+                        <div class="race-bonus">
+                            <strong>Passiva: Espírita</strong>
+                            <p>• Enxerga entidades. +4 Paranormal/Intuição. +3 feitiços Primitivo.</p>
+                            <strong style="margin-top: 10px; display: block; color: #ffffff;">Habilidades:</strong>
+                            <p><strong>Cura Natural:</strong> (2 PP) Cura 2D12+Int. Sucesso em Paranormal cura 1D4 pessoas.</p>
+                            <p><strong>Dança do Fogo:</strong> (4 PD) Você e aliado recebem +1 dado e ponto de crítico.</p>
+                        </div>
+                    </div>
+                    <div class="race-card">
+                        <h3>BARDO</h3>
+                        <p class="race-desc">Leva a música para o campo de batalha. (Requer Artista e Kit Artes).</p>
+                        <div class="race-bonus">
+                            <strong>Passiva: Playlist</strong>
+                            <p>• Escutar música favorita concede 10 PP temporários.</p>
+                            <strong style="margin-top: 10px; display: block; color: #ffffff;">Habilidades:</strong>
+                            <p><strong>Partitura:</strong> (4 PD) +2D em Percepção e Dano.</p>
+                            <p><strong>Music Star:</strong> (2 PD) +1 Presença e Resistência Mental (1D6+PRE) para grupo.</p>
+                        </div>
+                    </div>
+                    <div class="race-card">
+                        <h3>ILUMINADO</h3>
+                        <p class="race-desc">Mente avançada que alcançou a iluminação.</p>
+                        <div class="race-bonus">
+                            <strong>Passiva: Precognição</strong>
+                            <p>• +7 na ND e +1D em qualquer teste.</p>
+                            <strong style="margin-top: 10px; display: block; color: #ffffff;">Habilidades:</strong>
+                            <p><strong>Lúcido:</strong> (4 PD) Remove efeito de medo de si ou aliado.</p>
+                            <p><strong>Epifânia:</strong> (2 PD) Falha por 3 pontos vira sucesso crítico.</p>
+                        </div>
+                    </div>
+                    <div class="race-card">
+                        <h3>SOBREVIVENTE</h3>
+                        <p class="race-desc">Tirou proveito do inferno que viveu.</p>
+                        <div class="race-bonus">
+                            <strong>Passiva: Instinto de sobrevivência</strong>
+                            <p>• Reflexos e Percepção feitos com Sobrevivência (aplica na ND).</p>
+                            <strong style="margin-top: 10px; display: block; color: #ffffff;">Habilidades:</strong>
+                            <p><strong>Pele Marcada:</strong> (2 PV) 5 Proteção e imune a efeitos negativos (exceto radiação).</p>
+                            <p><strong>Mentalmente Desumano:</strong> (3 PP) Imune a intimidação/nojo e +3 Resistência Mental.</p>
+                        </div>
+                    </div>
+                    <div class="race-card">
+                        <h3>SNAKE</h3>
+                        <p class="race-desc">Manipulador nato, duas caras.</p>
+                        <div class="race-bonus">
+                            <strong>Passiva: Manipulação</strong>
+                            <p>• Imune a leitura de mentira. +1D Diplomacia e Enganação.</p>
+                            <strong style="margin-top: 10px; display: block; color: #ffffff;">Habilidades:</strong>
+                            <p><strong>Camaleão:</strong> (2 PD) Copia última habilidade/ação do oponente (exceto feitiços/criaturas).</p>
+                            <p><strong>Impostor:</strong> (MD 26 Intuição) Copia atributos, antecedente e classe do alvo.</p>
+                        </div>
+                    </div>
+                    <div class="race-card">
+                        <h3>ECO</h3>
+                        <p class="race-desc">Fragmentou a alma em duas partes.</p>
+                        <div class="race-bonus">
+                            <strong>Passiva: Manifesto</strong>
+                            <p>• Manifesta segunda alma (Eco) que ataca a 9m.</p>
+                            <strong style="margin-top: 10px; display: block; color: #ffffff;">Habilidades:</strong>
+                            <p><strong>Bodyguard Eco:</strong> (3 PP) Eco fornece 10 Armadura e +2D em teste.</p>
+                            <p><strong>Hax Eco:</strong> (4 PP) Eco realiza 1 feitiço poderoso.</p>
+                        </div>
+                    </div>
+                    <div class="race-card">
+                        <h3>ARRUACEIRO</h3>
+                        <p class="race-desc">Sobrevivente de vícios e das ruas.</p>
+                        <div class="race-bonus">
+                            <strong>Passiva: Sarjeta</strong>
+                            <p>• +2 Resistência. Bêbado/drogado/confuso dá +1D físico.</p>
+                            <strong style="margin-top: 10px; display: block; color: #ffffff;">Habilidades:</strong>
+                            <p><strong>Passo Torto:</strong> (2 PD) +2 Agilidade e inimigos têm -3 ataque por 1D10 turnos.</p>
+                            <p><strong>Meu Vício:</strong> Consumir vício dá +1D físico e dano.</p>
+                        </div>
+                    </div>
+                    <div class="race-card">
+                        <h3>ZOO</h3>
+                        <p class="race-desc">Amante de animais, parceiro da natureza.</p>
+                        <div class="race-bonus">
+                            <strong>Passiva: Treinador Zoo</strong>
+                            <p>• Até 2 animais têm sistema de Flow.</p>
+                            <strong style="margin-top: 10px; display: block; color: #ffffff;">Habilidades:</strong>
+                            <p><strong>Presa Sobre Presa:</strong> Animais atacam no seu lugar em coreografia sem penalidade.</p>
+                            <p><strong>Vamos Conseguir:</strong> (2 PD) Próximo teste do animal tem +1D e -3 MD.</p>
+                        </div>
+                    </div>
+                    <div class="race-card">
+                        <h3>KAMIKAZE</h3>
+                        <p class="race-desc">Impulso de fazer o certo, mesmo destruindo o corpo.</p>
+                        <div class="race-bonus">
+                            <strong>Passiva: Flagelo</strong>
+                            <p>• Gasta PV no lugar de PP. +5 PV temporários. Age com 0 PV para sacrifício.</p>
+                            <strong style="margin-top: 10px; display: block; color: #ffffff;">Habilidades:</strong>
+                            <p><strong>Prazer na Dor:</strong> Ao receber dano, +1D Força. (3 PD) Converte 1D em dano.</p>
+                            <p><strong>Banzai:</strong> Ataque suicida tem crítico automático ou +1D10 dano. Morte causa explosão.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Afortunado Routes -->
+                <div id="routes-afortunado" class="class-routes-group" style="display: none;">
+                    <div class="race-card">
+                        <h3>ACORRENTADO</h3>
+                        <p class="race-desc">Usa criaturas a seu favor com correntes.</p>
+                        <div class="race-bonus">
+                            <strong>Passiva: Vinhas</strong>
+                            <p>• Usa Paranormal+Int para Luta. Corrente causa +1D8 dano.</p>
+                            <strong style="margin-top: 10px; display: block; color: #ffffff;">Habilidades:</strong>
+                            <p><strong>Escravizar Criatura:</strong> (10 PP) Captura criatura derrotada (MD 36 Vontade). Máx 3.</p>
+                            <p><strong>Escravizar Fantoche:</strong> (8 PP) Captura corpo de Player/NPC morto como fantoche.</p>
+                        </div>
+                    </div>
+                    <div class="race-card">
+                        <h3>CONSTRUTOR</h3>
+                        <p class="race-desc">Realiza construções excelentes usando MC.</p>
+                        <div class="race-bonus">
+                            <strong>Passiva: "Mochilinha de pedreiro"</strong>
+                            <p>• Int na Força para inventário. +1D6 Slots. Bônus a cada 10 slots.</p>
+                            <strong style="margin-top: 10px; display: block; color: #ffffff;">Habilidades:</strong>
+                            <p><strong>Reforço:</strong> Fortalece ou reconstrói construções.</p>
+                            <p><strong>Bloco por Bloco:</strong> Constrói do zero (tempo/recursos definidos pelo mestre).</p>
+                        </div>
+                    </div>
+                    <div class="race-card">
+                        <h3>MAESTRO</h3>
+                        <p class="race-desc">Estrategista que coleciona habilidades alheias.</p>
+                        <div class="race-bonus">
+                            <strong>Passiva: Orquestra</strong>
+                            <p>• Grimório de feitiços (inclui Desolação).</p>
+                            <strong style="margin-top: 10px; display: block; color: #ffffff;">Habilidades:</strong>
+                            <p><strong>Sinfonia das Almas:</strong> Rouba feitiço permanentemente de quem morre (gasta PP).</p>
+                            <p><strong>Dueto em Sintonia:</strong> Copia feitiço visto até fim da cena (gasta PP).</p>
+                        </div>
+                    </div>
+                    <div class="race-card">
+                        <h3>JOKER</h3>
+                        <p class="race-desc">Versão caótica do Jester, sem moralidade.</p>
+                        <div class="race-bonus">
+                            <strong>Passiva: Piada Mortal</strong>
+                            <p>• Finalizar inimigo gera efeito aleatório (Recupera PD, penalidade, explosão ou cura PP).</p>
+                            <strong style="margin-top: 10px; display: block; color: #ffffff;">Habilidades:</strong>
+                            <p><strong>Carta na Manga:</strong> (4 PD) Com metade PV/PP, ganha +8 em perícia.</p>
+                            <p><strong>Trickster:</strong> (3 PP) Ao matar/aliado morrer, efeito aleatório (Buff, Cura, Dano, etc).</p>
+                        </div>
+                    </div>
+                    <div class="race-card">
+                        <h3>DORMINHOCO</h3>
+                        <p class="race-desc">Sempre com sono, imprevisível.</p>
+                        <div class="race-bonus">
+                            <strong>Passiva: Sonâmbulo</strong>
+                            <p>• Ignora ofuscado/cego/inconsciente/etc. Sono não recupera status.</p>
+                            <strong style="margin-top: 10px; display: block; color: #ffffff;">Habilidades:</strong>
+                            <p><strong>Pesadelo:</strong> (2 PD) Vantagem em Luta/Percepção. (Pesadelo: Reflexos/Atletismo).</p>
+                            <p><strong>Onírico:</strong> (6 PP) Ataques viram Devaneio e causam +1D6 dano.</p>
+                        </div>
+                    </div>
+                    <div class="race-card">
+                        <h3>STRIKER</h3>
+                        <p class="race-desc">Caçador de recompensas perito em armas.</p>
+                        <div class="race-bonus">
+                            <strong>Passiva: Alvo Marcado</strong>
+                            <p>• Marca alvo: +2 Crítico, -4 Armadura alvo, +2 Testes ofensivos.</p>
+                            <strong style="margin-top: 10px; display: block; color: #ffffff;">Habilidades:</strong>
+                            <p><strong>Cascavel:</strong> (2 PD) Crítico causa sangramento/peçonha. Crítico auto em alvo lento.</p>
+                            <p><strong>Favoritas:</strong> Modifica armas. Executar alvo permite marcar outro (2 PD).</p>
+                        </div>
+                    </div>
+                    <div class="race-card">
+                        <h3>MORTIFER</h3>
+                        <p class="race-desc">Planejador meticuloso e executor implacável.</p>
+                        <div class="race-bonus">
+                            <strong>Passiva: Vox</strong>
+                            <p>• Oculta verdade. Maximiza Enganação/Diplomacia. Inimigos têm -2 em testes contra.</p>
+                            <strong style="margin-top: 10px; display: block; color: #ffffff;">Habilidades:</strong>
+                            <p><strong>Terror Psicológico:</strong> (2 PD) Crítico reduz PP. (2 PD) Elimina se 1 PP/PV.</p>
+                            <p><strong>Incógnito:</strong> (2 PP) Teste bônus investigação/enganação. Interfere em câmeras.</p>
+                        </div>
+                    </div>
+                    <div class="race-card">
+                        <h3>PESTE</h3>
+                        <p class="race-desc">Suporte linha de frente, cirurgião da morte. (Requer Medicina).</p>
+                        <div class="race-bonus">
+                            <strong>Passiva: Cruz Vermelha</strong>
+                            <p>• Cura como Praga. Usa Int no ataque.</p>
+                            <strong style="margin-top: 10px; display: block; color: #ffffff;">Habilidades:</strong>
+                            <p><strong>Tortura:</strong> Dano recupera PV. (3 PD) Aumenta recuperação.</p>
+                            <p><strong>Contágio:</strong> Remove efeito negativo. (2 PD) Transfere efeito para inimigo.</p>
+                        </div>
+                    </div>
+                    <div class="race-card">
+                        <h3>DIVERGENTE</h3>
+                        <p class="race-desc">Escolha entre alma ou corpo.</p>
+                        <div class="race-bonus">
+                            <strong>Passiva: Feiticeiro</strong>
+                            <p>• +2 feitiços e +1 ação padrão.</p>
+                            <strong style="margin-top: 10px; display: block; color: #ffffff;">Habilidades:</strong>
+                            <p><strong>Alma:</strong> +3 feitiços, custo -1 PP.</p>
+                            <p><strong>Corpo:</strong> 3 estilos de combate (custam 4 PD ao invés de 6 PP).</p>
+                        </div>
+                    </div>
+                    <div class="race-card">
+                        <h3>REI</h3>
+                        <p class="race-desc">Não se ajoelha, grandioso.</p>
+                        <div class="race-bonus">
+                            <strong>Passiva: Coroa</strong>
+                            <p>• +1D10 em perícias. Imune a intimidação/pasmo. +1 Habilidade Geral.</p>
+                            <strong style="margin-top: 10px; display: block; color: #ffffff;">Habilidades:</strong>
+                            <p><strong>Reinado:</strong> (4 PD) +1D em testes de aliados na cena.</p>
+                            <p><strong>Imponente:</strong> (3 PD) Imune a medo e +1D em todos os testes.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Races Section -->
+        <section id="races">
+            <h2>👥 As Raças do Mundo</h2>
+            <p>O mundo sofreu perdas bilionárias, mas permanece repleto de seres diversos. Escolha sua raça e descubra seus poderes únicos.</p>
+            
+            <div class="races-container">
+                <div class="race-card">
+                    <h3>HUMANO</h3>
+                    <div class="race-desc">A raça mais abundante. Sempre avançam, sem importar o que aconteça.</div>
+                    <div class="race-bonus">
+                        <strong>Bônus:</strong>
+                        <p>• +25 na margem de herança</p>
+                        <p>• +2 em 2 perícias</p>
+                    </div>
+                </div>
+
+                <div class="race-card">
+                    <h3>DHAMPIRO</h3>
+                    <div class="race-desc">Híbrido de humano e vampiro com presas características.</div>
+                    <div class="race-bonus">
+                        <strong>Bônus:</strong>
+                        <p>• Sofre 1D4 dano por turno ao sol</p>
+                        <p>• Barra Blood (BD) substitui PP</p>
+                        <p>• Vampirismo em ataques</p>
+                    </div>
+                </div>
+
+                <div class="race-card">
+                    <h3>ANDROIDE</h3>
+                    <div class="race-desc">Seres criados artificialmente que vivem como humanos.</div>
+                    <div class="race-bonus">
+                        <strong>Bônus:</strong>
+                        <p>• Barra EN (Energia) substitui PP/PD</p>
+                        <p>• 1 item acoplado no corpo</p>
+                        <p>• +2 Inteligência</p>
+                        <p>• +4 Armadura natural</p>
+                    </div>
+                </div>
+
+                <div class="race-card">
+                    <h3>WRAITHBORN</h3>
+                    <div class="race-desc">Seres entre o mundo espiritual e dos vivos.</div>
+                    <div class="race-bonus">
+                        <strong>Bônus:</strong>
+                        <p>• Começa com -4 de PP</p>
+                        <p>• Dano não-paranormal reduzido pela metade</p>
+                        <p>• +1 Presença</p>
+                    </div>
+                </div>
+
+                <div class="race-card">
+                    <h3>DWARF</h3>
+                    <div class="race-desc">Anões robustos, fortes e amigáveis de estatura baixa.</div>
+                    <div class="race-bonus">
+                        <strong>Bônus:</strong>
+                        <p>• Permanentemente baixo</p>
+                        <p>• Usa armaduras pesadas</p>
+                        <p>• +1D em testes de Força</p>
+                        <p>• +3 Constituição, -2 Presença</p>
+                    </div>
+                </div>
+
+                <div class="race-card">
+                    <h3>VEILBORN</h3>
+                    <div class="race-desc">Raça nova tida como presságio. Corpo transformado em madeira cinza.</div>
+                    <div class="race-bonus">
+                        <strong>Bônus:</strong>
+                        <p>• Começa com metade da vida</p>
+                        <p>• Dobro do PP total</p>
+                        <p>• Imune a medo</p>
+                        <p>• +3 Presença</p>
+                    </div>
+                </div>
+
+                <div class="race-card">
+                    <h3>EROS</h3>
+                    <div class="race-desc">Humanos com extensões de aves. Velozes e corajosos.</div>
+                    <div class="race-bonus">
+                        <strong>Bônus:</strong>
+                        <p>• Capacidade de voar</p>
+                        <p>• Determinação + Agilidade</p>
+                        <p>• +2 Agilidade, -2 Força</p>
+                    </div>
+                </div>
+
+                <div class="race-card">
+                    <h3>VICISSIM</h3>
+                    <div class="race-desc">Raça baseada em pessoas que voltaram dos mortos.</div>
+                    <div class="race-bonus">
+                        <strong>Bônus:</strong>
+                        <p>• Volta à vida 1x ao chegar em 0 PV</p>
+                        <p>• PV completo ao reviver</p>
+                        <p>• +5 PP permanentemente</p>
+                        <p>• +3 Presença, -2 Constituição</p>
+                    </div>
+                </div>
+
+                <div class="race-card">
+                    <h3>ELÁNIDE</h3>
+                    <div class="race-desc">Raça de conhecimento elevado com olhos amarelos únicos.</div>
+                    <div class="race-bonus">
+                        <strong>Bônus:</strong>
+                        <p>• +1 dado em Inteligência permanentemente</p>
+                        <p>• +3 Inteligência geral</p>
+                        <p>• -2 Força</p>
+                    </div>
+                </div>
+
+                <div class="race-card">
+                    <h3>OSTEON</h3>
+                    <div class="race-desc">Raça muito magra ou rosto parcialmente caveira.</div>
+                    <div class="race-bonus">
+                        <strong>Bônus:</strong>
+                        <p>• Vantagem em feitiços</p>
+                        <p>• Vantagem em dano de feitiços</p>
+                        <p>• +2 Presença, +2 Inteligência, -3 Agilidade</p>
+                    </div>
+                </div>
+
+                <div class="race-card">
+                    <h3>ASURA</h3>
+                    <div class="race-desc">Humanos corrompidos que transcenderam a humanidade como demônios.</div>
+                    <div class="race-bonus">
+                        <strong>Bônus:</strong>
+                        <p>• Flow sobe com atitudes "más"</p>
+                        <p>• 8 PV temporários por missão</p>
+                        <p>• Cada ataque reduz 3 PD/PP do inimigo</p>
+                        <p>• +3 Determinação, +2 Força</p>
+                    </div>
+                </div>
+
+                <div class="race-card">
+                    <h3>LYTHARI</h3>
+                    <div class="race-desc">Raça que vem de outro planeta com terceiro olho na testa.</div>
+                    <div class="race-bonus">
+                        <strong>Bônus:</strong>
+                        <p>• Único com elemento Desconhecido</p>
+                        <p>• 3 feitiços deste elemento</p>
+                        <p>• -1 PP nos feitiços</p>
+                        <p>• +2 Inteligência, +2 Força</p>
+                    </div>
+                </div>
+
+                <div class="race-card">
+                    <h3>TIDE ONES</h3>
+                    <div class="race-desc">Transformam-se em humanos. Em aquáticos revelam forma escamosa.</div>
+                    <div class="race-bonus">
+                        <strong>Bônus:</strong>
+                        <p>• +30% dano de calor e fogo</p>
+                        <p>• Aprimoramento físico no habitat</p>
+                        <p>• +1 em atributos físicos</p>
+                        <p>• +1D em testes físicos</p>
+                    </div>
+                </div>
+
+                <div class="race-card">
+                    <h3>COCCINUS</h3>
+                    <div class="race-desc">Sobreviventes de incêndio. Pele queimada que pega fogo.</div>
+                    <div class="race-bonus">
+                        <strong>Bônus:</strong>
+                        <p>• Pode voar</p>
+                        <p>• Imune a temperatura</p>
+                        <p>• +1D dano de fogo</p>
+                        <p>• +2 Agilidade, +2 Constituição, -2 Inteligência</p>
+                    </div>
+                </div>
+
+                <div class="race-card">
+                    <h3>ANTRO</h3>
+                    <div class="race-desc">Demi Humano raro com traços de animais.</div>
+                    <div class="race-bonus">
+                        <strong>Bônus:</strong>
+                        <p>• Aprimoramento em 1 atributo animal</p>
+                        <p>• Soma total máxima 10</p>
+                    </div>
+                </div>
+
+                <div class="race-card">
+                    <h3>SKIN FALLS</h3>
+                    <div class="race-desc">Alteram própria carne para se esconder.</div>
+                    <div class="race-bonus">
+                        <strong>Bônus:</strong>
+                        <p>• Transforma em qualquer pessoa</p>
+                        <p>• Não muda atributos</p>
+                        <p>• +2 em perícias de presença</p>
+                        <p>• +3 Presença, -2 Determinação</p>
+                    </div>
+                </div>
+
+                <div class="race-card">
+                    <h3>FINDATUR</h3>
+                    <div class="race-desc">Raça com sangue venenoso.</div>
+                    <div class="race-bonus">
+                        <strong>Bônus:</strong>
+                        <p>• Qualquer dano causa Envenenamento 2</p>
+                        <p>• Recebe Sangramento 1</p>
+                        <p>• +3 Determinação, -1 Constituição</p>
+                    </div>
+                </div>
+
+                <div class="race-card">
+                    <h3>SCARY-DINO</h3>
+                    <div class="race-desc">Humanos com escamas, cauda e presas afiadas.</div>
+                    <div class="race-bonus">
+                        <strong>Bônus:</strong>
+                        <p>• Agilidade usa Força no lugar</p>
+                        <p>• +30% chance de sangramento</p>
+                        <p>• +3 Força, -2 Determinação</p>
+                    </div>
+                </div>
+
+                <div class="race-card">
+                    <h3>BOBO</h3>
+                    <div class="race-desc">Maquiagem que não sai e chapéu de bobo que sempre volta.</div>
+                    <div class="race-bonus">
+                        <strong>Bônus:</strong>
+                        <p>• +2 em ND pelo chapéu</p>
+                        <p>• 1 item aleatório por missão</p>
+                        <p>• +3 Presença, +3 Inteligência, -3 Força</p>
+                    </div>
+                </div>
+
+                <div class="race-card">
+                    <h3>POP</h3>
+                    <div class="race-desc">Praticamente indistinguível de humanos.</div>
+                    <div class="race-bonus">
+                        <strong>Bônus:</strong>
+                        <p>• +3 em testes de manipulação</p>
+                        <p>• Sucesso recupera 2 PP</p>
+                        <p>• +2 Presença, +2 Determinação</p>
+                    </div>
+                </div>
+
+                <div class="race-card">
+                    <h3>REENCARNADO</h3>
+                    <div class="race-desc">Pessoas do passado reencarnadas.</div>
+                    <div class="race-bonus">
+                        <strong>Bônus:</strong>
+                        <p>• 1 habilidade geral ou feitiço</p>
+                        <p>• Ganha Cronofobia</p>
+                        <p>• +2 Determinação, +2 Inteligência</p>
+                    </div>
+                </div>
+
+                <div class="race-card">
+                    <h3>PEDRADO</h3>
+                    <div class="race-desc">Humanos originados do silício.</div>
+                    <div class="race-bonus">
+                        <strong>Bônus:</strong>
+                        <p>• Não precisa comer nem beber</p>
+                        <p>• Imune a frio e calor</p>
+                        <p>• +2 em 2 perícias</p>
+                    </div>
+                </div>
+
+                <div class="race-card">
+                    <h3>KONCHU</h3>
+                    <div class="race-desc">Raça com extensões facetas como inseto.</div>
+                    <div class="race-bonus">
+                        <strong>Bônus:</strong>
+                        <p>• +2m de deslocamento</p>
+                        <p>• 1 feitiço de transformação</p>
+                        <p>• +2 Agilidade, +2 Constituição, -2 Força</p>
+                    </div>
+                </div>
+
+                <div class="race-card">
+                    <h3>KESSEN</h3>
+                    <div class="race-desc">Derivada da lenda japonesa. Homens em trajes feudais.</div>
+                    <div class="race-bonus">
+                        <strong>Bônus:</strong>
+                        <p>• Ataques ignoram 40% proteção</p>
+                        <p>• Só curado por envenenamento</p>
+                        <p>• +4 Presença</p>
+                    </div>
+                </div>
+
+                <div class="race-card">
+                    <h3>OBSCURE ELÁNIDE</h3>
+                    <div class="race-desc">Versão escura do Elánide com pele escura e olhos negros.</div>
+                    <div class="race-bonus">
+                        <strong>Bônus:</strong>
+                        <p>• -1 gasto de PP em feitiços</p>
+                        <p>• +3 Inteligência, -2 Força</p>
+                    </div>
+                </div>
+
+                <div class="race-card">
+                    <h3>IMO</h3>
+                    <div class="race-desc">Olhos negros com pupilas azuis brilhando na escuridão.</div>
+                    <div class="race-bonus">
+                        <strong>Bônus:</strong>
+                        <p>• +22 PP a mais</p>
+                        <p>• +3 Determinação</p>
+                    </div>
+                </div>
+
+                <div class="race-card">
+                    <h3>NOX</h3>
+                    <div class="race-desc">Pálidos com secreções dos olhos como lágrimas.</div>
+                    <div class="race-bonus">
+                        <strong>Bônus:</strong>
+                        <p>• Limbo e Desolação custam -3 PP</p>
+                        <p>• Vantagem em Dungeons em feitiços</p>
+                        <p>• +3 Presença, -2 Determinação</p>
+                    </div>
+                </div>
+
+                <div class="race-card">
+                    <h3>COYOTE</h3>
+                    <div class="race-desc">Equivalente do Kessen em terras desérticas.</div>
+                    <div class="race-bonus">
+                        <strong>Bônus:</strong>
+                        <p>• Vantagem em Pontaria e Sobrevivência</p>
+                        <p>• Crítico: +1 numeração, -1 Margem</p>
+                        <p>• +4 Inteligência, -2 Determinação</p>
+                    </div>
+                </div>
+
+                <div class="race-card">
+                    <h3>QAREEN</h3>
+                    <div class="race-desc">Pessoas com poderes mágicos. Orelhas pontudas.</div>
+                    <div class="race-bonus">
+                        <strong>Bônus:</strong>
+                        <p>• -1 custo de feitiços</p>
+                        <p>• 1 feitiço aleatório mutável por cena</p>
+                        <p>• +2 Determinação, +2 Presença</p>
+                    </div>
+                </div>
+
+                <div class="race-card">
+                    <h3>AGGELUS</h3>
+                    <div class="race-desc">Híbrido de Humano e Elánide com asas na cabeça.</div>
+                    <div class="race-bonus">
+                        <strong>Bônus:</strong>
+                        <p>• +10 na margem de herança</p>
+                        <p>• +1D em testes de Inteligência</p>
+                        <p>• +4 Inteligência</p>
+                    </div>
+                </div>
+
+                <div class="race-card">
+                    <h3>SERPENS</h3>
+                    <div class="race-desc">Raça com pele humana e cabelos que são cobras vivas.</div>
+                    <div class="race-bonus">
+                        <strong>Bônus:</strong>
+                        <p>• Proficiência em objetos anômalos</p>
+                        <p>• +2 Paranormal, +2 Anomalia</p>
+                        <p>• +2 Presença, +2 Agilidade</p>
+                    </div>
+                </div>
+
+                <div class="race-card">
+                    <h3>ANCIÃO</h3>
+                    <div class="race-desc">Idosos com longevidade vasta.</div>
+                    <div class="race-bonus">
+                        <strong>Bônus:</strong>
+                        <p>• Idoso sem debuff de idade</p>
+                        <p>• +2 Inteligência, -2 Agilidade</p>
+                    </div>
+                </div>
+
+                <div class="race-card">
+                    <h3>FACIEM</h3>
+                    <div class="race-desc">Raça conhecida por máscaras coladas no corpo.</div>
+                    <div class="race-bonus">
+                        <strong>Bônus:</strong>
+                        <p>• +1 habilidade geral</p>
+                        <p>• +2 em ND</p>
+                        <p>• +2 Presença, +1 Determinação</p>
+                    </div>
+                </div>
+
+                <div class="race-card">
+                    <h3>BABYDOLL</h3>
+                    <div class="race-desc">Transferiram mentes para corpos novos.</div>
+                    <div class="race-bonus">
+                        <strong>Bônus:</strong>
+                        <p>• Imune a sangramento, envenenamento</p>
+                        <p>• Imune a fome/sede e suor</p>
+                        <p>• +2 Agilidade, +2 Inteligência, -3 Constituição</p>
+                    </div>
+                </div>
+
+                <div class="race-card">
+                    <h3>VERDAN</h3>
+                    <div class="race-desc">Seres de outro planeta esverdeados.</div>
+                    <div class="race-bonus">
+                        <strong>Bônus:</strong>
+                        <p>• Regeneração 1 por 1D8 rodadas</p>
+                        <p>• Elemento Desconhecido (2 feitiços)</p>
+                        <p>• +2 Inteligência, +2 Força</p>
+                    </div>
+                </div>
+
+                <div class="race-card">
+                    <h3>INFUBUS</h3>
+                    <div class="race-desc">Filho de Pop com Asura. Pele que muda coloração.</div>
+                    <div class="race-bonus">
+                        <strong>Bônus:</strong>
+                        <p>• Suga 2 PP do inimigo ao causar dano</p>
+                        <p>• Recupera metade de comida/bebida</p>
+                        <p>• +2 Determinação, +2 Presença</p>
+                    </div>
+                </div>
+
+                <div class="race-card">
+                    <h3>COLUMEN</h3>
+                    <div class="race-desc">Mistura de Pedrado e Dhampiro. Poder vampírico.</div>
+                    <div class="race-bonus">
+                        <strong>Bônus:</strong>
+                        <p>• Imunidades do Pedrado</p>
+                        <p>• Vampirismo do Dhampiro</p>
+                        <p>• +1 em todos os atributos físicos</p>
+                    </div>
+                </div>
+
+                <div class="race-card">
+                    <h3>IGNIS</h3>
+                    <div class="race-desc">Eros com Coccinus. Pessoa alada que pega fogo.</div>
+                    <div class="race-bonus">
+                        <strong>Bônus:</strong>
+                        <p>• Capacidade de voar</p>
+                        <p>• Dano de fogo é convertido em cura</p>
+                        <p>• Vantagem em Velocidade/Determinação</p>
+                        <p>• +2 Determinação, +2 Constituição</p>
+                    </div>
+                </div>
+
+                <div class="race-card">
+                    <h3>FRACTI</h3>
+                    <div class="race-desc">Humano afetado pelo paranormal.</div>
+                    <div class="race-bonus">
+                        <strong>Bônus:</strong>
+                        <p>• +8 de Resistência Mental</p>
+                        <p>• +2 Determinação</p>
+                    </div>
+                </div>
+
+                <div class="race-card">
+                    <h3>GOJIN</h3>
+                    <div class="race-desc">Raça com extrema dificuldade. Parecidos com Elánide.</div>
+                    <div class="race-bonus">
+                        <strong>Bônus:</strong>
+                        <p>• +10 PP temporários</p>
+                        <p>• Danos com 1+ dado vira 1D</p>
+                        <p>• +3 Determinação, +1D em rolagens</p>
+                    </div>
+                </div>
+
+                <div class="race-card">
+                    <h3>GEMINI</h3>
+                    <div class="race-desc">Gêmeos que compartilham uma alma.</div>
+                    <div class="race-bonus">
+                        <strong>Bônus:</strong>
+                        <p>• Gêmeos decidem quem age cada turno</p>
+                        <p>• Gastar 2 PP permite outro agir</p>
+                        <p>• +3 Presença</p>
+                    </div>
+                </div>
+
+                <div class="race-card">
+                    <h3>GOLIAS</h3>
+                    <div class="race-desc">Pessoas enormes com 1,90-2,00m. Pupilas vermelhas.</div>
+                    <div class="race-bonus">
+                        <strong>Bônus:</strong>
+                        <p>• Gigante sem desvantagem de PD</p>
+                        <p>• Modo fúria: +4 Força por 6 rodadas</p>
+                        <p>• +2 Força, -3 Agilidade</p>
+                    </div>
+                </div>
+
+                <div class="race-card">
+                    <h3>LIRIO</h3>
+                    <div class="race-desc">Vivem na natureza em harmonia com fauna e flora.</div>
+                    <div class="race-bonus">
+                        <strong>Bônus:</strong>
+                        <p>• Fala com animais</p>
+                        <p>• 2 feitiços de Primitivo</p>
+                        <p>• +2 Presença, -1 Constituição</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Elementares Section -->
+        <section id="elementares">
+            <h2>⚗️ Elementares</h2>
+            <div class="lore-container">
+                <div class="lore-section">
+                    <h3 style="color: #9b0000;">TINTA </h3>
+                    <p>A Tinta é uma presença inquietante, um líquido vivo que parece pulsar entre o etéreo e o real, como se carregasse em si o peso de tudo o que já existiu. Sua cor oscila em tons profundos, misturando o negro absoluto do abismo oceânico ao vermelho vivo e úmido do sangue recém-derramado. É densa, viscosa, com um brilho que atrai os olhos, mas não reflete a luz; ao contrário, ela a devora, como um segredo que nunca será compartilhado. Ao escorrer, espalha-se de forma hipnótica, criando formas que parecem respirar, como se cada movimento fosse carregado de intenção.</p>
+                    <p>Tocar a Tinta é sentir o tempo escorrer pelos dedos, não em segundos ou minutos, mas em vidas inteiras que passam em um instante. Ela canta histórias sem palavras, como o murmúrio de ondas ou o sussurro de vozes antigas, de almas presas em seu fluxo. Cada gota guarda o peso de memórias perdidas, de futuros não vividos.</p>
+                    <p>A Tinta respira o caos das profundezas, com o ritmo inconstante de uma maré furiosa, ora se expandindo como um oceano infinito, ora retraindo-se até caber na palma da mão. Mas mais do que tempo ou oceano, ela é emoção encarnada. Sua presença penetra na alma e arranca sentimentos à força, amplificando-os até que não possam mais ser suportados, sentindo cada sentimento tão forte quanto o sangue fervente ou a carne dilacerada.</p>
+                    <p>A arte de cada tinta afeta os sentimentos e o tempo, mergulhando quem apreciar em um vasto oceano.</p>
+                     <img src="https://cdn.discordapp.com/attachments/1298273237372764273/1469514074831458505/ba9e088b-b3a9-4307-946d-20e9232c10ef.jpg?ex=6987ef21&is=69869da1&hm=93c537e25d20fb5fbb61b12aa9c19e12b739fb27598d04c518049cbc3aeabc70&" alt="Elemento Tinta" style="max-width: 100%; height: auto; margin-bottom: 20px; border-radius: 5px; border: 1px solid #9b0000; display: block;">
+                </div>
+                <div class="lore-section">
+                    <h3 style="color: #007bff;">DEVANEIO </h3>
+                    <p>O Devaneio é um espaço liminar, onde o real e o imaginado se encontram e se confundem. É feito de neblina, areia e ilusão, um lugar onde a realidade se curva, se quebra e se repete, aprisionando quem o adentra em ciclos intermináveis. Suas paisagens são mutáveis, oscilando entre céus infinitos de paz e abismos profundos que parecem engolir a própria existência.</p>
+                    <p>A neblina é o véu que conecta dimensões, carregando sussurros de vozes desconhecidas e memórias que não são suas. A areia, por sua vez, escorre entre os dedos, cada grão contendo uma possibilidade perdida ou um pensamento esquecido. Tudo no Devaneio é instável: a gravidade, a percepção, as emoções. Ele alterna entre extremos – ora um refúgio de sonhos belos, ora um pesadelo sufocante que manipula as mentes de quem ousa explorá-lo.</p>
+                    <p>No Devaneio, as fronteiras entre dimensões se dissolvem, permitindo que novas realidades se manifestem. Contudo, há um preço: quem se perde ali pode se tornar parte dele, uma sombra na neblina ou um grão de areia em sua vastidão infinita, preso para sempre nesse ciclo de incertezas e ilusões.</p>
+                    <p>Cada sonho e devaneio afeta a percepção do que é real, iludindo os sonhadores.</p>
+                    <img src="https://cdn.discordapp.com/attachments/1298273237372764273/1469514197422571631/IMG-20260206-WA0084.jpg?ex=6987ef3e&is=69869dbe&hm=9e0af30aa5481bba1745271b5f9eec0ef69307d833dc7e35cab5105f3f9c3c18&" alt="Elemento Devaneio" style="max-width: 100%; height: auto; margin-bottom: 20px; border-radius: 5px; border: 1px solid #007bff; display: block;">
+                </div>
+                <div class="lore-section">
+                    <h3 style="color: #ffd700;">RESPLENDOR</h3>
+                    <p>O Resplendor é uma força que não apenas ilumina, mas revela. Ele não é uma luz comum, mas um brilho profundo, quase tangível, que penetra os véus mais densos da ignorância e expõe o mundo como ele realmente é. Sua presença é ao mesmo tempo tranquilizadora e aterradora, pois enquanto traz sabedoria e compreensão, também força a confrontar verdades que antes estavam escondidas.</p>
+                    <p>Ele envolve o ambiente com uma luz dourada e quente, que não cega, mas inunda a mente com clareza. Memórias enterradas vêm à tona, não como meros flashes, mas com uma nitidez avassaladora, permitindo revivê-las como se estivessem acontecendo novamente. No entanto, essas lembranças não vêm sozinhas – elas trazem consigo os sentimentos e as consequências que estavam esquecidos ou ignorados.</p>
+                    <p>O Resplendor tem uma sabedoria antiga, quase eterna, e sua essência parece sussurrar lições perdidas no tempo. Ele revela padrões invisíveis, conexões que antes passavam despercebidas, como se reorganizasse os fragmentos caóticos da realidade para formar um quadro maior. É impossível olhar para ele sem sentir uma mudança interna; ele exige aprendizado, mesmo que à custa da paz, pois saber tudo é perder tudo.</p>
+                    <p>No entanto, há um perigo em sua claridade. Quanto mais o Resplendor ilumina, mais difícil se torna fugir da realidade. Ele não permite ilusões, confortos ou máscaras. O que antes parecia seguro pode ser visto como falso; o que parecia insignificante pode revelar-se imensurável.</p>
+                    <p>O Resplendor oferece conhecimento e percepção, mas nunca a escolha de recusar o que é mostrado. Ele é uma força inevitável, uma revelação que brilha no âmago de tudo o que é real – belo, cruel e indiscutivelmente verdadeiro.</p>
+                    <img src="https://cdn.discordapp.com/attachments/1298273237372764273/1469516396080795708/IMG-20260206-WA0156.jpg?ex=6987f14b&is=69869fcb&hm=d3eaefb72349e6e076863805f68f0eee7115be699c14b5609867780f70ef3f91" alt="Elemento Resplendor" style="max-width: 100%; height: auto; margin-bottom: 20px; border-radius: 5px; border: 1px solid #ffd700; display: block;">
+                </div>
+                <div class="lore-section">
+                    <h3 style="color: #00ff4c;">GLITCH </h3>
+                    <p>O Glitch é a manifestação inquietante de um erro cósmico, um distúrbio que surge na interseção entre o natural e o artificial, o conhecido e o incognoscível. Ele não é apenas uma falha, mas uma anomalia viva, pulsando com uma energia que desafia as leis da física e da lógica. Sua essência é um fragmento de caos, uma quebra na linearidade do tempo e espaço, onde realidades se entrelaçam e desmoronam.</p>
+                    <p>Quando o Glitch se manifesta, a natureza e a tecnologia se fundem de maneiras grotescas e imprevisíveis. Ele distorce a percepção gerando loucura, criando lapsos e caos, onde apenas a desordem e aleatoriedade reinam.</p>
+                    <p>O Glitch manipula dimensões, revelando mundos paralelos em fraturas efêmeras. O ar ao redor dele parece vibrar com uma frequência inconstante, como se a própria existência estivesse hesitando e se caotizando. As criaturas expostas a ele tornam-se híbridos de carne e circuito, presas em um ciclo de mutação e degradação.</p>
+                    <p>No coração do Glitch está a aleatoriedade, uma força que não pode ser prevista ou controlada. Ele é a encarnação da incerteza, uma entidade que se alimenta da fragilidade da realidade. Tudo o que toca é corrompido, transformado em algo que não deveria existir, mas que persiste, desafiando a sanidade e a compreensão.</p>
+                    <p>O Glitch é mais do que uma falha; ele é uma advertência de que a fronteira entre a criação e a destruição, entre o natural e o sintético, é mais fina e frágil do que se imagina.</p>
+                    <img src="https://cdn.discordapp.com/attachments/1298273237372764273/1469518283324788905/afbe2713-fce3-4ab3-95b7-94692b1c303f.png?ex=6987f30d&is=6986a18d&hm=3100fe8bcb45604170bd8c7f7099580ae1c8ada08acdb5db5f301eba30019f0a" alt="Elemento Glitch" style="max-width: 100%; height: auto; margin-bottom: 20px; border-radius: 5px; border: 1px solid #00ff4c; display: block;">
+                </div>
+                <div class="lore-section">
+                    <h3 style="color: #808080;">DESOLACÃO</h3>
+                    <p>A Desolação é o vazio que se instala quando todas as luzes se apagam, quando o familiar se dissolve e apenas o desconhecido permanece. É um estado onde a realidade se fragmenta, abrindo caminho para que o paranormal floresça em toda a sua estranheza e malevolência. Aqui, o medo não é uma reação, mas uma presença constante e opressora, enraizada no coração e na mente.</p>
+
+                    <p>Este elemento não apenas assusta, ele consome. A Desolação é o rompimento daquilo que se entende como seguro e lógico, revelando um mundo onde as regras do real não se aplicam mais. A paisagem é árida e estéril, mas não vazia; é povoada por sombras e murmúrios que espreitam nas beiradas da percepção. Cada sussurro e movimento na penumbra carrega promessas de horrores inimagináveis, e a certeza de que o que está por vir será pior do que o que já foi visto.</p>
+
+                    <p>O puro terror se manifesta nas distorções sutis – paredes que respiram, silhuetas que se deslocam sem corpo, objetos que desafiam as leis da física. A lógica se desfaz, e com ela, qualquer esperança de segurança. A Desolação é o berço do horror, onde cada passo em falso pode levar a um destino pior que a morte, e onde o desespero se torna uma companheira constante.</p>
+
+                    <p>Neste domínio, o medo não é apenas sentido, é vivido. Ele se enraíza, cresce e floresce, transformando tudo ao redor em um pesadelo sem fim. A Desolação não deixa espaço para a fuga ou redenção – é a personificação do fim, onde a única certeza é o terror que nunca termina.</p>
+                    <img src="https://cdn.discordapp.com/attachments/1298273237372764273/1469514196935774360/IMG-20260206-WA0096.jpg?ex=6987ef3e&is=69869dbe&hm=ee6adf1a41f5c806e3698aca269dd1c8f5802f05b49f72dd3827802008efcb8b&" alt="Elemento Desolação" style="max-width: 100%; height: auto; margin-bottom: 20px; border-radius: 5px; border: 1px solid #808080; display: block;">
+                    
+                </div>
+                <div class="lore-section">
+                    <h3 style="color: #808080;">LIMBO</h3>
+                    <p>O Limbo é a encarnação do terror maior, um abismo onde tudo deixa de existir. É o estado de anulidade total, onde nem a luz, nem a sombra, nem o tempo conseguem subsistir. Neste vazio absoluto, não há som, movimento ou sentido – apenas a presença esmagadora do nada, que consome e apaga tudo o que toca. Esse elemento é o mais misterioso; afeta todos os elementos exceto o medo, pois o medo não tem fim. Suas manifestações são raras, quase impossíveis de presenciar, mas quando ocorrem podem corromper qualquer tentativa de compreensão.</p>
+                     <img src="https://cdn.discordapp.com/attachments/1298273237372764273/1469514193563812046/IMG-20260206-WA0136.jpg?ex=6987ef3d&is=69869dbd&hm=7d6b698ce3716bb5462308e252edbfb309bb5cf4dcbf2a7fe63a384a0faa3fdc&" alt="Elemento Desolação" style="max-width: 100%; height: auto; margin-bottom: 20px; border-radius: 5px; border: 1px solid #808080; display: block;">
+                </div>
+                <div class="lore-section">
+                    <h3 style="color: #000000; text-shadow: 0 0 2px #ffffff;">DESCONHECIDO</h3>
+                    <p>O Desconhecido é um elemento ancestral que vive na humanidade desde os tempos em que o homem era guiado apenas pelas estrelas. Antes do medo se enraizar por completo, havia curiosidade; o Desconhecido carrega essa centelha e, quando liberto, revela verdades que estão além do alcance da razão dos experientes. Não é somente amedrontador — é inevitável quando a sabedoria falha.</p>
+
+                    <p>Esse elemento não obedece às regras dos demais nem reside no mesmo lar; ele age como ferramenta e perigo, um amuleto ou arma nas mãos dos caçadores que atravessam florestas escuras. As estrelas podem cair, a tecnologia entrar em ruído, os céus escurecer e a mente humana falhar diante do incompreensível.</p>
+                    <img src="https://cdn.discordapp.com/attachments/1298273237372764273/1469514195325419551/IMG-20260206-WA0080.jpg?ex=6987ef3e&is=69869dbe&hm=d1792740099644a1faf660cbc263e77542be94631f6c043ce9e0a91c60e7f5e4&" alt="Elemento Desconhecido" style="max-width: 100%; height: auto; margin-bottom: 20px; border-radius: 5px; border: 1px solid #000000; display: block;">
+                </div>
+                <div class="lore-section">
+                    <h3 style="color: #8b4513;">ELEMENTO PRIMITIVO</h3>
+                    <p>O Elemento Primitivo nasce da própria humanidade — uma chama interior anterior ao paranormal. Não é consequência de forças externas, mas sim um impulso interno de sobrevivência e caça, um traço evolutivo que persiste mesmo quando o mundo muda. Raro e pouco aceito em realidades modernas, o Primitivo alimenta instintos antigos que moldam destinos.</p>
+                    <img src="https://cdn.discordapp.com/attachments/1298273237372764273/1469514075187970292/b003e018-1c38-4ce3-b4b5-8609b533d080.jpg?ex=6987ef21&is=69869da1&hm=f5e647c03e325f900db0023d3d9ca478919b36608a4d5f94bfcc2e516913cc55&" alt="Elemento Primitivo" style="max-width: 100%; height: auto; margin-bottom: 20px; border-radius: 5px; border: 1px solid #8b4513; display: block;">
+                </div>
+            </div>
+        </section>
+
+        <!-- Lore Section -->
+        <section id="lore">
+            <h2>📖 A História de FALLEN</h2>
+            <div class="lore-container">
+                <div class="lore-section">
+                    <h3><strong>Caos</strong></h3>
+                    <p><strong>Caos</strong> é uma entidade representada pela desordem, aleatoriedade, desequilíbrio e conflito. Responsável pela criação de toda criatura que habita uma dimensão caotizada e refletida da realidade lógica, também cria tal dimensão que foge de qualquer tentativa de entendimento. Tem o poder de fortalecer o paranormal do outro lado — tanto criaturas quanto eventos inexplicáveis; pode alterar e distorcer a realidade; pode reescrever toda a existência como se apagasse e reescrevesse palavras em um livro através de um ritual próprio. Essas são algumas das capacidades dessa entidade.</p>
+                </div>
+
+                <div class="lore-section">
+                    <h3><strong>Flow</strong></h3>
+                    <p><strong>Flow</strong> é uma entidade com o senso moral voltado a proteger o seu lado do véu, admirando e potencializando as criaturas que nele habitam. Na Terra, por exemplo, cerca de 15% dos humanos conseguem se aprimorar através da essência desse ser. Ele existe para ser o equilíbrio — algo que o Caos não é — surgindo após ele como resposta à balança desequilibrada.</p>
+                </div>
+
+                <div class="lore-section">
+                    <h3><strong>Vhael</strong></h3>
+                    <p><strong>Vhael</strong> é a entidade responsável pela criação da película que separa duas dimensões, criando uma dimensão inteira entre elas para evitar que se fundam. Também chamada de Véu, ela se desgasta em planetas com vida senciente através de influências ao longo do tempo, muito depois da criação do universo e do desenvolvimento da tecnologia dos seres que o habitam.</p>
+                </div>
+
+                <div class="lore-section">
+                    <h3><strong>Xyra</strong></h3>
+                    <p><strong>Xyra</strong> foi o primeiro ocultista do universo e responsável por compreender o outro lado, impondo uma única regra naquele lugar caótico: os Elementos. Os humanos conhecem Xyra através de pinturas no outro lado e inscrições rupestres que descrevem seus feitos. Xyra também é responsável pelas crenças de muitos povos, transmitindo conhecimentos paranormais e métodos que influenciaram tradições como a dos magos egípcios.</p>
+                </div>
+
+                <div class="lore-section">
+                    <h3><strong>Prelúdio</strong></h3>
+                    <p><strong>Prelúdio</strong> são entidades que aparecem quando algo monumental está prestes a acontecer com toda a vida de um planeta — nascimento, morte, renascimento, alvorecer ou grande sofrimento. Sua presença assusta povos inteiros, pois trazem mudanças profundas. A humanidade conhece essas entidades porque, mesmo sem lembrar claramente, elas já estiveram na Terra várias vezes, frequentemente representadas como anjos ou servos de algo superior.</p>
+                </div>
+
+                <div class="lore-section">
+                    <h3><strong>∅ (O Impronunciável)</strong></h3>
+                    <p><strong>∅</strong> é o impronunciável que dorme fora de todas as realidades, além do espaço, tempo e existência. Diz-se que ele criou o universo junto da vida e que gerou os três Primórdios — uma tríade tida por muitos como seus filhos. Toda religião da Terra se apoia em um grande princípio, mesmo as politeístas com um líder entre os deuses. Dois textos complementares foram encontrados: um na Terra e outro em uma expedição no outro lado — ambos apontando para uma letra fora do alfabeto humano e para imagens rupestres relatando os três grandes abaixo dessa letra.</p>
+                </div>
+
+                <div class="lore-section">
+                    <h3><strong>O Colapso</strong></h3>
+                    <p>O paranormal sempre esteve presente na humanidade — em feitiçaria, exorcismos e presenças espirituais. Em algum momento, essas capacidades e entidades desapareceram, restando apenas crenças. Eventualmente, o paranormal retornou após um período de calmaria: uma "pandemia" seguida de guerra no 3º milênio trouxe o retorno de fenómenos anômalos. 50% da população mundial morreu; dos sobreviventes, alguns evoluíram para outras espécies. Cerca de 50% dos humanos restantes ganharam a capacidade de autoevolução chamada "Flow" e uma pequena parcela recebeu "Heranças". O paranormal voltou por entidades, eventos e também através de pessoas, algumas das quais formaram a classe dos "Nocturne" — apesar disso, a maioria desconhece o passado e as raças.</p>
+                </div>
+
+                <div class="lore-section">
+                    <h3><strong>Reset</strong></h3>
+                    <p>Uma batalha cósmica opõe a entidade do <strong>Caos</strong> e a entidade do <strong>Flow</strong>. Quando a luta se intensifica, o universo pode entrar em colapso; aventureiros tentam impedir o Caos, levando ao evento final chamado "Reset". Após um Reset, o universo retorna alterado, com o equilíbrio entre as realidades possivelmente mudado — até mesmo a reencarnação pode ocorrer como forma de rebalanceamento universal.</p>
+                </div>
+
+                <div class="lore-section">
+                    <h3><strong>Religiões</strong></h3>
+                    <p>Quando as crenças retornaram após o Colapso, novas religiões surgiram para dar suporte aos fiéis. O mundo passou a compartilhar várias tradições que, por vezes, parecem variações de uma mesma fé. Algumas divindades relevantes:</p>
+                    <ul>
+                        <li><strong>∅</strong> — o Impronunciável, a presença central por trás de muitas religiões.</li>
+                        <li><strong>Nycthaeon</strong> — divindade relacionada à noite; sua influência pode ser benigna ou maléfica.</li>
+                        <li><strong>Lyssis</strong> — representa a libertação e os mares; pronunciá-la em alto mar é arriscado.</li>
+                    </ul>
+                    <p>Existem outras entidades, mas deixo espaço para sua criatividade florescer.</p>
+                </div>
+
+                <div class="lore-section">
+                    <h3><strong>Notas</strong></h3>
+                    <p><em>conteudo produzido por lukas kauan </em></p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Game Section -->
+        <section id="game">
+            <h2>📜 Ficha do Personagem</h2>
+            <div class="character-sheet" id="finalSheet">
+⌬ Nome: <span id="sheetName"></span>
+⌬ Apelido: <span id="sheetNickname"></span>
+⌬ Data de Aniversário: <span id="sheetBirthday"></span>
+⌬ Idade: <span id="sheetAge"></span>
+⌬ Físico: <span id="sheetPhysique"></span>
+⌬ Nacionalidade: <span id="sheetNationality"></span>
+⌬ Personalidade: <span id="sheetPersonality"></span>
+⌬ Raça: <span id="sheetRace"></span>
+
+━━━━━━━━━❮◆❯━━━━━━━━━
+PV ｢<span id="sheetPV">0/0</span>｣       PP ｢<span id="sheetPP">0/0</span>｣
+PD ｢<span id="sheetPD">0/0</span>｣       ND ｢<span id="sheetND">0</span>｣ 
+
+F ｢▪︎▪︎▪︎▪︎▪︎▪︎▪︎▪︎▪︎▪︎｣
+S ｢▪︎▪︎▪︎▪︎▪︎｣
+
+Agi ｢<span id="sheetAgi">0</span>｣            Int ｢<span id="sheetInt">0</span>｣
+
+For ｢<span id="sheetFor">0</span>｣           Con ｢<span id="sheetCon">0</span>｣
+
+Pre ｢<span id="sheetPre">0</span>｣           Det ｢<span id="sheetDet">0</span>｣
+
+
+Flow ｢1｣
+『0/100』
+Gloom ➟ (<span id="sheetGloom">0</span>)♧
+Capacidade de Carga: <span id="sheetLoad">0</span>
+━━━━━━━━━❮◆❯━━━━━━━━━
+
+Classe: <span id="sheetClass"></span>
+Rota:🔒 <span id="sheetRoute"></span>
+
+Perícias treinadas: <span id="sheetSkills"></span>
+
+Antecedente: <span id="sheetBackground"></span>
+Perícias de antecedente:
+
+✭ Habilidade de Antecedente:
+
+✭ Habilidades gerais de Classe: <span id="sheetClassAbilities"></span>
+
+
+☆ Passiva de Rota: <span id="sheetRoutePassive"></span>
+✭ Habilidade de Rota: <span id="sheetRouteAbility"></span>
+
+✢ Herança: 🔒</div>
+            <button class="btn" onclick="copySheet()" style="margin-top: 15px; width: 100%;">Copiar Ficha</button>
+        </section>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 FALLEN - O RPG de Fantasia Sombria. Todos os direitos reservados. Por Luiz Fernando Rabelo.</p>
+    </footer>
+
+    <script>
+        let pointsDistribution = {
+            determination: 0,
+            agility: 0,
+            strength: 0,
+            intelligence: 0,
+            constitution: 0,
+            presence: 0
+        };
+
+        let availablePoints = 7;
+
+        const raceAttributes = {
+            // Valores base de raça não são mais usados para cálculo direto de PV/PD/PP
+            // O cálculo agora é definido pela Classe + Atributos.
+            // Mantendo objeto apenas para referência de ID se necessário.
+        };
+
+        // Bônus que afetam atributos (não substituem pontos distribuídos)
+        const raceAttributeModifiers = {
+            humano: {},
+            dhampiro: { determination: 1 },
+            androide: { intelligence: 2, nd: 4 },
+            wraithborn: { presence: 1 },
+            elanide: { intelligence: 3, strength: -2 },
+            veilborn: { presence: 2 },
+            asura: { determination: 3, strength: 2 },
+            gojin: { intelligence: 1 },
+            gemini: { presence: 3 },
+            lythari: { intelligence: 2, strength: 2 },
+            tidones: { agility: 2, strength: 1 },
+            coccinus: { agility: 2, constitution: 2, intelligence: -2 },
+            antro: { strength: 1 },
+            skinfalls: { presence: 3, determination: -2 },
+            findatur: { determination: 3, constitution: -1 },
+            scarydino: { strength: 3, determination: -2 },
+            bobo: { presence: 3, intelligence: 3, strength: -3, nd: 2 },
+            pop: { presence: 2, determination: 2 },
+            reencarnado: { determination: 2, intelligence: 2 },
+            pedrado: { constitution: 4 },
+            konchu: { agility: 2, constitution: 2, strength: -2 },
+            kessen: { presence: 4 },
+            obscureelandide: { intelligence: 3, strength: -2 },
+            imo: { determination: 3 },
+            nox: { presence: 3, determination: -2 },
+            coyote: { intelligence: 4, determination: -2 },
+            qareen: { determination: 2, presence: 2 },
+            aggelus: { intelligence: 4 },
+            serpens: { presence: 2, agility: 2 },
+            anciao: { intelligence: 2, agility: -2 },
+            faciem: { presence: 2, determination: 1, nd: 2 },
+            babydoll: { agility: 2, intelligence: 2, constitution: -3 },
+            verdan: { intelligence: 2, strength: 2 },
+            infubus: { determination: 2, presence: 2 },
+            columen: { strength: 1 },
+            ignis: { determination: 2, constitution: 2 },
+            fracti: { determination: 2 },
+            vicissim: { presence: 3 },
+            golias: { strength: 2, agility: -3 }
+        };
+
+        // Bônus de classe (apenas atributos; núcleos específicos são calculados por computeClassExtras)
+        const classBonuses = {
+            nocturne: { attrs: { intelligence: 1, presence: 1 } },
+            brutamonte: { attrs: { strength: 1, constitution: 1 } },
+            perspicaz: { attrs: { intelligence: 2 } },
+            rammus: { attrs: { constitution: 1, intelligence: 1 } },
+            pulsar: { attrs: { intelligence: 1, determination: 1 } },
+            sazonal: { attrs: { presence: 1, agility: 1 } },
+            afortunado: { attrs: { determination: 2 } }
+        };
+
+        // Dados de Habilidades de Rota e Passivas
+        const routeDetails = {
+            ceifador: { passive: "Defesa Maldita", abilities: ["Ceifar", "Liberação"] },
+            viajante: { passive: "Contemplem o Mago", abilities: ["Barreira", "Passar Páginas"] },
+            encapuzado: { passive: "Sanidade Sã", abilities: ["Desesperación", "Zumbido"] },
+            transformado: { passive: "Evolução Deturpada", abilities: ["Brujería"] },
+            obsessivo: { passive: "Histeria", abilities: ["Necrófago", "Dilacerar"] },
+            ziel: { passive: "Flashlight", abilities: ["Vene", "Pfeil"] },
+            gari: { passive: "Reciclar", abilities: ["Limpeza", "Transfusão"] },
+            delinquente: { passive: "WildCard", abilities: ["Armadilhas", "Extensão"] },
+            predador: { passive: "Temporada de caça", abilities: ["Zona", "Fatalidade"] },
+            guardiao: { passive: "Tanque de Guerra", abilities: ["Muralha", "Por Vocês"] },
+            olimpico: { passive: "Caçador de Monstros", abilities: ["Herói", "Semideus"] },
+            capitao: { passive: "Um por Todos", abilities: ["Por suas vidas", "Liderança"] },
+            berserk: { passive: "Doom", abilities: ["Frenesi Sanguinário", "Fúria"] },
+            runner: { passive: "Energético de Adrenalina", abilities: ["Flashbeat", "Vibrante"] },
+            deadman: { passive: "Triller", abilities: ["Quebra Crânio", "Mais um pra cova"] },
+            vigilante: { passive: "Murciélago", abilities: ["La Noche", "Cráneo"] },
+            invernal: { passive: "Vermelho Branco", abilities: ["Friamente", "Medalha"] },
+            // Perspicaz
+            praga: { passive: "Pronto socorro", abilities: ["Roda Roda efeito", "Anjo da Guarda"] },
+            sentinela: { passive: "Atirador Profissional", abilities: ["Disparo Vital", "Bang"] },
+            ninja: { passive: "Ninjutsu", abilities: ["Assassino", "Ghost"] },
+            inventor: { passive: "Mochilinha", abilities: ["Mestre Construtor", "Cinto de Utilidades"] },
+            overmarine: { passive: "Pulsação Marinha", abilities: ["Canção das profundezas", "Tiburón"] },
+            jester: { passive: "Riso Incontrolável", abilities: ["Carta na Manga", "Ri por Último"] },
+            cienceiro: { passive: "Mente Fotográfica", abilities: ["Revolução Científica"] },
+            tablier: { passive: "Petisco", abilities: ["Fogão", "Utensílio"] },
+            noir: { passive: "Extração Social", abilities: ["Olhos de Falcão", "Investigador Paranormal"] },
+            hacker: { passive: "Hacker Profissional", abilities: ["Malware", "Superaquecimento", "GBL"] },
+            // Pulsar
+            monge: { passive: "Pacifista", abilities: ["Golem", "Ki"] },
+            oshaman: { passive: "Espírita", abilities: ["Cura Natural", "Dança do Fogo"] },
+            bardo: { passive: "Playlist", abilities: ["Partitura", "Music Star"] },
+            iluminado: { passive: "Precognição", abilities: ["Lúcido", "Epifânia"] },
+            sobrevivente: { passive: "Instinto de sobrevivência", abilities: ["Pele Marcada", "Mentalmente Desumano"] },
+            snake: { passive: "Manipulação", abilities: ["Camaleão", "Impostor"] },
+            eco: { passive: "Manifesto", abilities: ["Bodyguard Eco", "Hax Eco"] },
+            arruaceiro: { passive: "Sarjeta", abilities: ["Passo Torto", "Meu Vício"] },
+            zoo: { passive: "Treinador Zoo", abilities: ["Presa Sobre Presa", "Vamos Conseguir"] },
+            kamikaze: { passive: "Flagelo", abilities: ["Prazer na Dor", "Banzai"] },
+            // Afortunado
+            acorrentado: { passive: "Vinhas", abilities: ["Escravizar Criatura", "Escravizar Fantoche"] },
+            construtor: { passive: "Mochilinha de pedreiro", abilities: ["Reforço", "Bloco por Bloco"] },
+            maestro: { passive: "Orquestra", abilities: ["Sinfonia das Almas", "Dueto em Sintonia"] },
+            joker: { passive: "Piada Mortal", abilities: ["Carta na Manga", "Trickster"] },
+            dorminhoco: { passive: "Sonâmbulo", abilities: ["Pesadelo", "Onírico"] },
+            striker: { passive: "Alvo Marcado", abilities: ["Cascavel", "Favoritas"] },
+            mortifer: { passive: "Vox", abilities: ["Terror Psicológico", "Incógnito"] },
+            peste: { passive: "Cruz Vermelha", abilities: ["Tortura", "Contágio"] },
+            divergente: { passive: "Feiticeiro", abilities: ["Alma", "Corpo"] },
+            rei: { passive: "Coroa", abilities: ["Reinado", "Imponente"] }
+        };
+
+        // Perícias e Habilidades de Classe
+        const classDetails = {
+            nocturne: { 
+                skills: "Paranormal, Vontade, Anormalidade",
+                abilities: "Acesso a Rituais, Conhecimento Oculto"
+            },
+            brutamonte: { 
+                skills: "Luta, Fortitude, Reflexos",
+                abilities: "Resiliência, Combate Brutal"
+            },
+            perspicaz: { 
+                skills: "4 Perícias de Inteligência",
+                abilities: "Estratégia, Dedução"
+            },
+            pulsar: { 
+                skills: "Vontade, Diplomacia, Percepção",
+                abilities: "Controle de Energia"
+            },
+            sazonal: { 
+                skills: "Acaso, Diplomacia, 2 a escolha",
+                abilities: "Evento Sazonal"
+            },
+            rammus: { 
+                skills: "Fortitude, Furtividade, Linguagem",
+                abilities: "Defesa Absoluta"
+            },
+            afortunado: { 
+                skills: "Acaso, Profissão, 2 a escolha",
+                abilities: "Sorte Extrema"
+            }
+        };
+
+        let player = {
+            name: 'Herói sem Nome',
+            class: 'warrior',
+            route: '',
+            race: 'human',
+            level: 1,
+            health: 100,
+            maxHealth: 100,
+            strength: 10,
+            intelligence: 6,
+            agility: 8,
+            gold: 50,
+            exp: 0
+        };
+
+        let enemy = {
+            name: 'Goblin Warrior',
+            health: 50,
+            maxHealth: 50,
+            damage: 8
+        };
+
+        function showSection(sectionId) {
+            const sections = document.querySelectorAll('section');
+            sections.forEach(section => section.classList.remove('active'));
+            document.getElementById(sectionId).classList.add('active');
+            window.scrollTo(0, 0);
+        }
+
+        // Dados das Rotas
+        const availableRoutes = {
+            nocturne: [
+                { id: 'ceifador', name: 'Ceifador' },
+                { id: 'viajante', name: 'Viajante' },
+                { id: 'encapuzado', name: 'Encapuzado' },
+                { id: 'transformado', name: 'Transformado' },
+                { id: 'obsessivo', name: 'Obsessivo' },
+                { id: 'ziel', name: 'Ziel' },
+                { id: 'gari', name: 'Gari' },
+                { id: 'delinquente', name: 'Delinquente' }
+            ],
+            // Adicionar outras classes conforme necessário
+            brutamonte: [
+                { id: 'predador', name: 'Predador' },
+                { id: 'guardiao', name: 'Guardião' },
+                { id: 'olimpico', name: 'Olímpico' },
+                { id: 'capitao', name: 'Capitão' },
+                { id: 'berserk', name: 'Berserk' },
+                { id: 'runner', name: 'Runner' },
+                { id: 'deadman', name: 'Deadman' },
+                { id: 'vigilante', name: 'Vigilante' },
+                { id: 'invernal', name: 'Invernal' }
+            ],
+            perspicaz: [
+                { id: 'praga', name: 'Praga' },
+                { id: 'sentinela', name: 'Sentinela' },
+                { id: 'ninja', name: 'Ninja' },
+                { id: 'inventor', name: 'Inventor' },
+                { id: 'overmarine', name: 'Overmarine' },
+                { id: 'jester', name: 'Jester' },
+                { id: 'cienceiro', name: 'Cienceiro' },
+                { id: 'tablier', name: 'Tablier' },
+                { id: 'noir', name: 'Noir' },
+                { id: 'hacker', name: 'Hacker' }
+            ],
+            rammus: [],
+            sazonal: [],
+            pulsar: [
+                { id: 'monge', name: 'Monge' },
+                { id: 'oshaman', name: 'O-Shaman' },
+                { id: 'bardo', name: 'Bardo' },
+                { id: 'iluminado', name: 'Iluminado' },
+                { id: 'sobrevivente', name: 'Sobrevivente' },
+                { id: 'snake', name: 'Snake' },
+                { id: 'eco', name: 'Eco' },
+                { id: 'arruaceiro', name: 'Arruaceiro' },
+                { id: 'zoo', name: 'Zoo' },
+                { id: 'kamikaze', name: 'Kamikaze' }
+            ],
+            afortunado: [
+                { id: 'acorrentado', name: 'Acorrentado' },
+                { id: 'construtor', name: 'Construtor' },
+                { id: 'maestro', name: 'Maestro' },
+                { id: 'joker', name: 'Joker' },
+                { id: 'dorminhoco', name: 'Dorminhoco' },
+                { id: 'striker', name: 'Striker' },
+                { id: 'mortifer', name: 'Mortifer' },
+                { id: 'peste', name: 'Peste' },
+                { id: 'divergente', name: 'Divergente' },
+                { id: 'rei', name: 'Rei' }
+            ]
+        };
+
+        function updateRoutes() {
+            const cls = document.getElementById('charClass').value;
+            const routeSelect = document.getElementById('charRoute');
+            
+            // Limpar opções atuais
+            routeSelect.innerHTML = '<option value="">— Selecione a Rota —</option>';
+            
+            if (cls && availableRoutes[cls] && availableRoutes[cls].length > 0) {
+                availableRoutes[cls].forEach(route => {
+                    const option = document.createElement('option');
+                    option.value = route.id;
+                    option.textContent = route.name;
+                    routeSelect.appendChild(option);
+                });
+                routeSelect.disabled = false;
+            } else if (cls) {
+                const option = document.createElement('option');
+                option.value = "padrao";
+                option.textContent = "Rota Padrão / Nenhuma";
+                routeSelect.appendChild(option);
+                routeSelect.disabled = false;
+            } else {
+                routeSelect.innerHTML = '<option value="">— Selecione a Classe Primeiro —</option>';
+                routeSelect.disabled = true;
+            }
+            updateRouteAbilities();
+        }
+
+        function updateRouteAbilities() {
+            const routeId = document.getElementById('charRoute').value;
+            const abilitySelect = document.getElementById('charRouteAbility');
+            
+            abilitySelect.innerHTML = '<option value="">— Selecione a Habilidade —</option>';
+            
+            if (routeId && routeDetails[routeId] && routeDetails[routeId].abilities) {
+                routeDetails[routeId].abilities.forEach(ab => {
+                    const option = document.createElement('option');
+                    option.value = ab;
+                    option.textContent = ab;
+                    abilitySelect.appendChild(option);
+                });
+                abilitySelect.disabled = false;
+            } else {
+                abilitySelect.innerHTML = '<option value="">— Nenhuma Habilidade Disponível —</option>';
+                abilitySelect.disabled = true;
+            }
+        }
+
+        function updatePreview() {
+            const name = document.getElementById('charName').value || 'Herói sem Nome';
+            const charClass = document.getElementById('charClass').value;
+            const charRouteSelect = document.getElementById('charRoute');
+            const charRoute = charRouteSelect.options[charRouteSelect.selectedIndex]?.text || '-';
+            const charRouteValue = charRouteSelect.value;
+            const race = document.getElementById('charRace').value;
+            const level = parseInt(document.getElementById('charLevel')?.value || '1', 10);
+
+            document.getElementById('previewName').textContent = name;
+            document.getElementById('previewClass').textContent = charClass.charAt(0).toUpperCase() + charClass.slice(1);
+            document.getElementById('previewRoute').textContent = (charRoute === '— Selecione a Rota —' || charRoute === '— Selecione a Classe Primeiro —') ? '-' : charRoute;
+            document.getElementById('previewRace').textContent = race.charAt(0).toUpperCase() + race.slice(1);
+
+            // se classe ou raça não selecionadas, mantenha todos os núcleos em zero
+            if (!charClass || !race) {
+                // resetar exibições para zero
+                document.getElementById('previewPV').textContent = 0;
+                document.getElementById('previewPD').textContent = 0;
+                document.getElementById('previewPP').textContent = 0;
+                document.getElementById('previewND').textContent = 0;
+                document.getElementById('determValue').textContent = pointsDistribution.determination;
+                document.getElementById('agilValue').textContent = pointsDistribution.agility;
+                document.getElementById('strengValue').textContent = pointsDistribution.strength;
+                document.getElementById('intellValue').textContent = pointsDistribution.intelligence;
+                document.getElementById('constiValue').textContent = pointsDistribution.constitution;
+                document.getElementById('preseValue').textContent = pointsDistribution.presence;
+                const ndEl = document.getElementById('computedND'); if (ndEl) ndEl.textContent = 0;
+                // store empty finalAttrs
+                window._lastFinalAttrs = { determination: 0, agility: 0, strength: 0, intelligence: 0, constitution: 0, presence: 0 };
+                return;
+            }
+
+            // atributos finais = pontos distribuídos + bônus de raça + bônus de classe
+            // humanos não recebem bônus de raça
+            const cls = classBonuses[charClass] || { attrs: {} };
+            const raceMods = (race === 'humano') ? {} : (raceAttributeModifiers[race] || {});
+            const finalAttrs = {
+                determination: pointsDistribution.determination + (raceMods.determination || 0) + (cls.attrs.determination || 0),
+                agility: pointsDistribution.agility + (raceMods.agility || 0) + (cls.attrs.agility || 0),
+                strength: pointsDistribution.strength + (raceMods.strength || 0) + (cls.attrs.strength || 0),
+                intelligence: pointsDistribution.intelligence + (raceMods.intelligence || 0) + (cls.attrs.intelligence || 0),
+                constitution: pointsDistribution.constitution + (raceMods.constitution || 0) + (cls.attrs.constitution || 0),
+                presence: pointsDistribution.presence + (raceMods.presence || 0) + (cls.attrs.presence || 0)
+            };
+
+            // Aplicar Bônus de Atributos da Rota (antes de calcular stats derivados)
+            if (charRouteValue === 'runner') {
+                finalAttrs.agility += 2; // Passiva: Energético de Adrenalina
+            }
+
+            // Calcular Núcleos com as novas fórmulas
+            const calculatedStats = calculateClassStats(charClass, race, level, finalAttrs, charRouteValue);
+            
+            // ND = 10 + Agilidade + Bônus de Raça (se houver)
+            const previewND = 10 + finalAttrs.agility + (raceMods.nd || 0);
+
+            document.getElementById('previewPV').textContent = calculatedStats.pv;
+            document.getElementById('previewPD').textContent = calculatedStats.pd;
+            document.getElementById('previewPP').textContent = calculatedStats.pp;
+            document.getElementById('previewND').textContent = previewND;
+            // mostrar ND calculado também próximo dos atributos
+            const ndEl = document.getElementById('computedND');
+            if (ndEl) ndEl.textContent = previewND;
+
+            // atualizar exibição dos valores de atributo (mostra pontos + bônus)
+            document.getElementById('determValue').textContent = finalAttrs.determination;
+            document.getElementById('agilValue').textContent = finalAttrs.agility;
+            document.getElementById('strengValue').textContent = finalAttrs.strength;
+            document.getElementById('intellValue').textContent = finalAttrs.intelligence;
+            document.getElementById('constiValue').textContent = finalAttrs.constitution;
+            document.getElementById('preseValue').textContent = finalAttrs.presence;
+
+            // store last computed finalAttrs for use when creating character
+            window._lastFinalAttrs = finalAttrs;
+            // Mostrar apenas os bônus da classe selecionada na pré-visualização
+            const classPreviewEl = document.getElementById('classBonusesPreview');
+            if (classPreviewEl) {
+                if (charClass && classBonuses[charClass]) {
+                    const clsInfo = classBonuses[charClass];
+                    let html = '<strong>Bônus da Classe:</strong>';
+                    html += '<div style="margin-top:6px;">';
+                    // atributos da classe
+                    if (clsInfo.attrs) {
+                        html += '<em> Atributos:</em><ul style="margin:6px 0 0 14px;">';
+                        for (const k in clsInfo.attrs) {
+                            if (clsInfo.attrs[k] && clsInfo.attrs[k] !== 0) {
+                                html += `<li>+${clsInfo.attrs[k]} ${k.charAt(0).toUpperCase() + k.slice(1)}</li>`;
+                            }
+                        }
+                        html += '</ul>';
+                    }
+                    html += '</div>';
+                    classPreviewEl.innerHTML = html;
+                } else {
+                    classPreviewEl.innerHTML = '<strong>Bônus da Classe:</strong> (nenhuma classe selecionada)';
+                }
+            }
+        }
+
+        // Nova função de cálculo baseada nas fórmulas exatas fornecidas
+        function calculateClassStats(charClass, race, level, attrs, route) {
+            let pv = 0, pd = 0, pp = 0;
+            const con = attrs.constitution || 0;
+            const str = attrs.strength || 0;
+            const agi = attrs.agility || 0;
+            const int = attrs.intelligence || 0;
+            const pre = attrs.presence || 0;
+            const det = attrs.determination || 0;
+            const lvl = Math.max(1, level || 1);
+
+            switch (charClass) {
+                case 'nocturne':
+                    pv = 12 + con + ((lvl - 1) * (str + con));
+                    pp = 24 + pre + ((lvl - 1) * (int + pre));
+                    pd = 10 + int + ((lvl - 1) * (con + int));
+                    break;
+                case 'brutamonte':
+                    pv = 26 + con + ((lvl - 1) * (str + con));
+                    pp = 12 + pre + ((lvl - 1) * (int + pre));
+                    pd = 14 + con + ((lvl - 1) * (agi + con));
+                    break;
+                case 'perspicaz':
+                    pv = 16 + con + ((lvl - 1) * (str + con));
+                    pp = 14 + pre + ((lvl - 1) * (int + pre));
+                    pd = 18 + int + ((lvl - 1) * (agi + int));
+                    break;
+                case 'pulsar':
+                    pv = 16 + con + ((lvl - 1) * (str + con));
+                    pp = 18 + pre + ((lvl - 1) * (int + det));
+                    pd = 14 + con + ((lvl - 1) * (agi + con));
+                    break;
+                case 'rammus':
+                    pv = 16 + con + ((lvl - 1) * (str + con));
+                    pp = 15 + pre + ((lvl - 1) * (pre + det));
+                    pd = 16 + agi + ((lvl - 1) * (agi + con));
+                    break;
+                case 'sazonal':
+                    pv = 17 + con + ((lvl - 1) * (str + con));
+                    pp = 19 + pre + ((lvl - 1) * (pre + det));
+                    pd = 18 + agi + ((lvl - 1) * (agi + con));
+                    break;
+                case 'afortunado':
+                    pv = 19 + con + ((lvl - 1) * (str + con));
+                    pp = 19 + pre + ((lvl - 1) * (int + det));
+                    pd = 16 + det + ((lvl - 1) * (agi + con));
+                    break;
+            }
+
+            // Modificadores Especiais de Raça
+            if (race === 'veilborn') {
+                pv = Math.floor(pv / 2);
+                pp = pp * 2;
+            }
+            if (race === 'wraithborn') pp = Math.max(0, pp - 4);
+            if (race === 'imo') pp += 22;
+            if (race === 'gojin') pp += 10;
+            if (race === 'vicissim') pp += 5;
+
+            // Modificadores de Rota
+            if (route === 'transformado' || route === 'guardiao') {
+                // Passiva: Evolução Deturpada / Tanque de Guerra - A cada nível upado adicione +4 no PV
+                pv += (lvl - 1) * 4;
+            }
+
+            return { pv, pd, pp };
+        }
+
+        function addPoint(attribute) {
+            if (availablePoints > 0) {
+                pointsDistribution[attribute]++;
+                availablePoints--;
+                updatePointDisplay();
+                updatePreview();
+            }
+        }
+
+        function removePoint(attribute) {
+            if (pointsDistribution[attribute] > 0) {
+                pointsDistribution[attribute]--;
+                availablePoints++;
+                updatePointDisplay();
+                updatePreview();
+            }
+        }
+
+        function resetAttributes() {
+            pointsDistribution = {
+                determination: 0,
+                agility: 0,
+                strength: 0,
+                intelligence: 0,
+                constitution: 0,
+                presence: 0
+            };
+            availablePoints = 7;
+            updatePointDisplay();
+            updatePreview();
+        }
+
+        function distributeRandomly() {
+            resetAttributes();
+            const keys = Object.keys(pointsDistribution);
+            while (availablePoints > 0) {
+                const randomKey = keys[Math.floor(Math.random() * keys.length)];
+                pointsDistribution[randomKey]++;
+                availablePoints--;
+            }
+            updatePointDisplay();
+            updatePreview();
+        }
+
+        function distributeBuild(type) {
+            resetAttributes();
+            let priorities = [];
+            if (type === 'intelligence') {
+                priorities = ['intelligence', 'intelligence', 'intelligence', 'intelligence', 'presence', 'presence', 'determination'];
+            } else {
+                priorities = ['strength', 'strength', 'strength', 'strength', 'constitution', 'constitution', 'agility'];
+            }
+
+            for (let i = 0; i < priorities.length && availablePoints > 0; i++) {
+                pointsDistribution[priorities[i]]++;
+                availablePoints--;
+            }
+            
+            while (availablePoints > 0) {
+                pointsDistribution[type === 'intelligence' ? 'intelligence' : 'strength']++;
+                availablePoints--;
+            }
+            updatePointDisplay();
+            updatePreview();
+        }
+
+        function updatePointDisplay() {
+            // mostra apenas pontos restantes — valores finais são exibidos por updatePreview()
+            document.getElementById('pointsRemaining').textContent = availablePoints;
+        }
+
+        function createCharacter() {
+            const name = document.getElementById('charName').value;
+            const charClass = document.getElementById('charClass').value;
+            const charRoute = document.getElementById('charRoute').value;
+            const charRouteAbility = document.getElementById('charRouteAbility').value;
+            const race = document.getElementById('charRace').value;
+            const level = parseInt(document.getElementById('charLevel')?.value || '1', 10);
+            
+            // Novos campos
+            const nickname = document.getElementById('charNickname').value || '-';
+            const birthday = document.getElementById('charBirthday').value || '-';
+            const age = document.getElementById('charAge').value || '-';
+            const physique = document.getElementById('charPhysique').value || '-';
+            const nationality = document.getElementById('charNationality').value || '-';
+            const personality = document.getElementById('charPersonality').value || '-';
+            const background = document.getElementById('charBackground').value || '-';
+
+            // garante que preview e _lastFinalAttrs estejam atualizados
+            updatePreview();
+
+            if (!name) {
+                alert('Por favor, digite o nome do seu personagem!');
+                return;
+            }
+            if (!charClass) {
+                alert('Por favor, selecione uma classe!');
+                return;
+            }
+            if (charRoute && charRoute !== 'padrao' && !charRouteAbility) {
+                alert('Por favor, selecione uma habilidade de rota!');
+                return;
+            }
+            if (!race) {
+                alert('Por favor, selecione uma raça!');
+                return;
+            }
+
+            // Calcular stats finais
+            const finalAttrs = window._lastFinalAttrs || pointsDistribution; // Fallback
+            const calculatedStats = calculateClassStats(charClass, race, level, finalAttrs, charRoute);
+            const raceMods = (race === 'humano') ? {} : (raceAttributeModifiers[race] || {});
+
+            const finalPV = calculatedStats.pv;
+            const finalPD = calculatedStats.pd;
+            const finalPP = calculatedStats.pp;
+            const finalND = 10 + finalAttrs.agility + (raceMods.nd || 0);
+            
+            // Cálculos extras da ficha
+            const gloom = Math.floor((Math.random() * 6 + 1) + (Math.random() * 6 + 1) + (Math.random() * 6 + 1)) * 10;
+            const loadCapacity = finalAttrs.strength * 3;
+
+            player.name = name;
+            player.class = charClass;
+            player.route = document.getElementById('charRoute').options[document.getElementById('charRoute').selectedIndex]?.text || 'Padrão';
+            player.race = race;
+            player.level = level;
+            player.pv = finalPV;
+            player.maxHealth = finalPV;
+            player.health = finalPV;
+            player.pd = finalPD;
+            player.pp = finalPP;
+            player.nd = finalND;
+            player.strength = finalAttrs.strength;
+            player.intelligence = finalAttrs.intelligence;
+            player.agility = finalAttrs.agility;
+            player.determination = finalAttrs.determination;
+            player.constitution = finalAttrs.constitution;
+            player.presence = finalAttrs.presence;
+
+            // Preencher a Ficha
+            document.getElementById('sheetName').textContent = name;
+            document.getElementById('sheetNickname').textContent = nickname;
+            document.getElementById('sheetBirthday').textContent = birthday;
+            document.getElementById('sheetAge').textContent = age;
+            document.getElementById('sheetPhysique').textContent = physique;
+            document.getElementById('sheetNationality').textContent = nationality;
+            document.getElementById('sheetPersonality').textContent = personality;
+            document.getElementById('sheetRace').textContent = race.charAt(0).toUpperCase() + race.slice(1);
+            
+            document.getElementById('sheetPV').textContent = `${finalPV}/${finalPV}`;
+            document.getElementById('sheetPP').textContent = `${finalPP}/${finalPP}`;
+            document.getElementById('sheetPD').textContent = `${finalPD}/${finalPD}`;
+            document.getElementById('sheetND').textContent = finalND;
+            
+            document.getElementById('sheetAgi').textContent = finalAttrs.agility;
+            document.getElementById('sheetInt').textContent = finalAttrs.intelligence;
+            document.getElementById('sheetFor').textContent = finalAttrs.strength;
+            document.getElementById('sheetCon').textContent = finalAttrs.constitution;
+            document.getElementById('sheetPre').textContent = finalAttrs.presence;
+            document.getElementById('sheetDet').textContent = finalAttrs.determination;
+            
+            document.getElementById('sheetGloom').textContent = gloom;
+            document.getElementById('sheetLoad').textContent = loadCapacity;
+            
+            document.getElementById('sheetClass').textContent = charClass.charAt(0).toUpperCase() + charClass.slice(1);
+            document.getElementById('sheetRoute').textContent = player.route;
+            document.getElementById('sheetBackground').textContent = background;
+            
+            // Preencher detalhes de classe e rota
+            const cDetails = classDetails[charClass] || { skills: "-", abilities: "-" };
+            document.getElementById('sheetSkills').textContent = cDetails.skills;
+            document.getElementById('sheetClassAbilities').textContent = cDetails.abilities;
+            
+            const rDetails = routeDetails[charRoute] || { passive: "-", abilities: [] };
+            document.getElementById('sheetRoutePassive').textContent = rDetails.passive;
+            document.getElementById('sheetRouteAbility').textContent = charRouteAbility || "-";
+
+            alert(`Ficha gerada com sucesso!`);
+            showSection('game');
+        }
+
+        function showClassRoutes(className) {
+            // Esconder todas as rotas
+            const allRoutes = document.querySelectorAll('.class-routes-group');
+            allRoutes.forEach(el => el.style.display = 'none');
+            
+            // Mostrar a selecionada se existir
+            const selected = document.getElementById('routes-' + className);
+            if (selected) {
+                selected.style.display = 'grid'; // Usar grid do races-container
+            } else {
+                alert('As rotas para ' + className.charAt(0).toUpperCase() + className.slice(1) + ' ainda não foram catalogadas.');
+            }
+        }
+
+        function copySheet() {
+            const range = document.createRange();
+            range.selectNode(document.getElementById('finalSheet'));
+            window.getSelection().removeAllRanges();
+            window.getSelection().addRange(range);
+            document.execCommand('copy');
+            window.getSelection().removeAllRanges();
+            alert('Ficha copiada com sucesso!');
+        }
+
+        updatePreview();
+    </script>
+</body>
+</html> 

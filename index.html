@@ -1,0 +1,103 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0B1E36">
+  <title>Um presente tranquilo</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@500;600&family=UnifrakturMaguntia&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="intro-overlay" id="introOverlay">
+    <div class="intro-card">
+      <div class="intro-copy">
+        <p class="intro-title">cite uma mulher bonita</p>
+        <p class="intro-subtitle">Escreva um nome que seja especial.</p>
+
+        <div class="intro-field">
+          <input id="introInput" type="text" placeholder="Digite um nome..." autocomplete="off" spellcheck="false">
+        </div>
+
+        <div class="intro-actions">
+          <button class="intro-button" id="introSubmit" type="button">Enviar</button>
+        </div>
+
+        <p class="intro-feedback" id="introFeedback"></p>
+      </div>
+    </div>
+    <div class="intro-glow"></div>
+  </div>
+
+
+
+  <div class="page-shell" id="pageShell">
+    <div class="background-layer"></div>
+    <main>
+      <section class="hero-section">
+        <div class="hero-copy reveal reveal-delay-1">
+          <span>fiz com carinho.</span>
+          <h1>espero que goste 🙃.</h1>
+          <p>Sem palavras fortes. Apenas cuidado, luz e tranquilidade para os dias.</p>
+        </div>
+      </section>
+
+      <section class="message-grid">
+        <article class="glass-card reveal reveal-delay-2">
+          <p>Não existe um motivo específico para isso existir.</p>
+        </article>
+        <article class="glass-card reveal reveal-delay-3">
+          <p>Há algo em você que me faz querer ficar mais um pouco.</p>
+        </article>
+        <article class="glass-card reveal reveal-delay-4">
+          <p>Você tem um jeito de deixar tudo mais leve, mesmo sem tentar.</p>
+        </article>
+        <article class="glass-card reveal reveal-delay-5">
+          <p>Eu sei que isso foi simples, mas garanto que foi de coraçao..</p>
+        </article>
+        <article class="glass-card reveal reveal-delay-6">
+          <p>Eu sei que isso foi simples, mas garanto que foi de coraçao.</p>
+        </article>
+      </section>
+
+      <section class="star-section" id="starSection">
+        <div class="star-header reveal reveal-delay-7">
+          <span>Um céu calmo para olhar e acreditar.</span>
+          <h2>Céu estrelado</h2>
+          <p>Toque uma estrela e deixe a mensagem suave aparecer.</p>
+        </div>
+
+        <div class="star-scene" id="starScene"></div>
+        <div class="star-nebula"></div>
+        <div class="star-message" id="starMessage">Clique em uma estrela para uma pequena mensagem.</div>
+      </section>
+
+      <section class="detail-section reveal reveal-delay-8">
+        <div class="detail-copy">
+          <h3>pra voce</h3>
+          <p>KIMBERLY</p>
+          <button class="heart-button" id="heartButton" type="button">aperta ai gata</button>
+        </div>
+      </section>
+    </main>
+
+    <div class="heart-overlay" id="heartOverlay" aria-hidden="true">
+      <div class="heart-card">
+        <button class="heart-close" id="heartClose" type="button" aria-label="Fechar animação">×</button>
+        <div class="heart-stage">
+          <div class="typing-text" id="typedName"></div>
+          <pre class="heart-shape" id="heartText" aria-hidden="true"></pre>
+        </div>
+      </div>
+    </div>
+
+    <footer class="site-footer">
+      <p>Às vezes, carinho também pode ser silencioso                               MADE BY LUIZ RABELO, FOR KIM.</p>
+    </footer>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
