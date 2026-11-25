@@ -66,7 +66,14 @@ let playingAudio = false;
 let heartTypingTimer = null;
 
 function initialize() {
-  document.body.style.overflow = 'hidden';
+  if (introOverlay) {
+    introOverlay.classList.remove('hidden', 'fade-out');
+    introOverlay.style.display = 'grid';
+    introOverlay.style.visibility = 'visible';
+    introOverlay.style.pointerEvents = 'auto';
+    document.body.style.overflow = 'hidden';
+  }
+
   createStars(120);
   setupScrollReveal();
   bindEvents();
