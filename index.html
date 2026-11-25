@@ -11,11 +11,27 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="intro-overlay" id="introOverlay" aria-hidden="true" hidden>
+  <div class="intro-overlay" id="introOverlay">
     <div class="intro-card">
+      <div class="intro-copy">
+        <p class="intro-title">cite uma mulher bonita</p>
+        <p class="intro-subtitle">Escreva um nome que seja especial.</p>
+
+        <div class="intro-field">
+          <input id="introInput" type="text" placeholder="Digite um nome..." autocomplete="off" spellcheck="false">
+        </div>
+
+        <div class="intro-actions">
+          <button class="intro-button" id="introSubmit" type="button">Enviar</button>
+        </div>
+
+        <p class="intro-feedback" id="introFeedback"></p>
+      </div>
     </div>
+    <div class="intro-glow"></div>
   </div>
 
+  <div class="page-shell" id="pageShell">
     <div class="background-layer"></div>
     <main>
       <section class="hero-section">

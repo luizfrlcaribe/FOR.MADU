@@ -4,6 +4,7 @@ const introOverlay = document.getElementById('introOverlay');
 const introInput = document.getElementById('introInput');
 const introSubmit = document.getElementById('introSubmit');
 const introFeedback = document.getElementById('introFeedback');
+const pageShell = document.getElementById('pageShell');
 const audioButton = document.getElementById('audioButton');
 const ambientAudio = document.getElementById('ambientAudio');
 const starScene = document.getElementById('starScene');
@@ -65,10 +66,7 @@ let playingAudio = false;
 let heartTypingTimer = null;
 
 function initialize() {
-  if (introOverlay) {
-    introOverlay.remove();
-  }
-  document.body.style.overflow = 'auto';
+  document.body.style.overflow = 'hidden';
   createStars(120);
   setupScrollReveal();
   bindEvents();
@@ -77,6 +75,15 @@ function initialize() {
 }
 
 function bindEvents() {
+  if (introSubmit && introInput) {
+    introSubmit.addEventListener('click', handleIntroSubmit);
+    introInput.addEventListener('keydown', (event) => {
+      if (event.key === 'Enter') {
+        handleIntroSubmit();
+      }
+    });
+  }
+
   if (heartButton) {
     heartButton.addEventListener('click', handleHeartButton);
   }
@@ -117,6 +124,12 @@ function handleIntroSubmit() {
   }
 }
 
+function setIntroFeedback(message) {
+  introFeedback.textContent = message;
+  introFeedback.classList.remove('correct');
+  introFeedback.classList.add('wrong');
+}
+
 function normalizeName(text) {
   return text
     .trim()
@@ -127,17 +140,23 @@ function normalizeName(text) {
 }
 
 function isAcceptedName(value) {
-  const accepted = [
-    'maria eduarda',
-    'mariaeduarda',
-    'duda',
+  const accepted = ['maria eduarda',
+'duda',
     'madu',
     'm eduarda',
     'eduarda',
     'maria d',
     'm d',
     'ma eduarda',
-    'madududa'
+    'madududa',
+    'madudinha',
+    'maria eduarda vitoria',
+    'maria eduarda vitória',
+    'maria vitoria eduarda',
+    'maria vitória eduarda',
+    'edu',
+    'dudinha',
+    'maduh'
   ];
   if (accepted.includes(value)) {
     return true;
