@@ -4,20 +4,55 @@ const introOverlay = document.getElementById('introOverlay');
 const introInput = document.getElementById('introInput');
 const introSubmit = document.getElementById('introSubmit');
 const introFeedback = document.getElementById('introFeedback');
-const pageShell = document.getElementById('pageShell');
 const audioButton = document.getElementById('audioButton');
 const ambientAudio = document.getElementById('ambientAudio');
 const starScene = document.getElementById('starScene');
 const starMessage = document.getElementById('starMessage');
 
-const starPhrases = [
-  'Seu sorriso parece uma estrela que nasce no silêncio da noite.',
-  'Há algo em você que faz até a lua querer ficar mais perto.',
-  'Seu olhar traz calma e um desejo suave de ficar mais um pouco.',
-  'Quando penso em você, o mundo fica mais leve e mais quente.',
-  'Seu jeito é como um segredo doce que eu quero guardar com cuidado.',
-  'Existe uma poesia no modo como você simplesmente existe.'
+const poemBeginnings = [
+  'Maria Eduarda, você é o verso que o céu aprende.',
+  'Duda, seu sorriso acende a noite em silêncio.',
+  'Madu, cada instante perto de você vira poesia.',
+  'No teu olhar, a lua encontra um lar.',
+  'Maria Eduarda, existe ternura em tudo o que você toca.',
+  'Duda, até o vento pede permissão para te levar uma saudade.',
+  'Madu, o mundo fica mais bonito quando você sorri.',
+  'Nos seus gestos, pequenos milagres ficam visíveis.',
+  'Maria Eduarda, seu nome ilumina caminhos quietos.',
+  'Duda, cada estrela guarda um pouco da sua delicadeza.',
+  'Madu, a madrugada parece sorrir com você.',
+  'Seu carinho é uma constelação dentro do peito.'
 ];
+
+const poemMiddles = [
+  'Como quem vê flores nascerem sob a lua.',
+  'Como uma melodia suave entrando pela janela.',
+  'Como o sol que encontra o mar ao amanhecer.',
+  'Como um segredo doce guardado com cuidado.',
+  'Como o brilho que a esperança deixa no horizonte.',
+  'Como uma carta escrita pelas estrelas.',
+  'Como a calmaria depois de uma longa tempestade.',
+  'Como a luz acendendo um quarto antigo.',
+  'Como alguém que ensina a vida a respirar.',
+  'Como um abraço que o tempo não consegue apagar.'
+];
+
+const poemEndings = [
+  'Que sorte a minha é poder admirar você.',
+  'Que você nunca esqueça o quanto é especial.',
+  'Que esta noite leve carinho até você.',
+  'Que todos os seus dias encontrem beleza.',
+  'Que o seu coração sempre reconheça a sua luz.',
+  'Que a alegria permaneça ao seu lado.',
+  'Que seus sonhos encontrem caminhos para florescer.',
+  'Que cada amanhecer seja gentil com você.',
+  'Que a vida te ofereça o amor que você merece.',
+  'Que você seja feliz em cada pequena coisa.'
+];
+
+const starPhrases = Array.from({ length: 120 }, (_, index) =>
+  `${poemBeginnings[index % poemBeginnings.length]}\n${poemMiddles[(index * 7) % poemMiddles.length]}\n${poemEndings[(index * 3) % poemEndings.length]}`
+);
 
 const heartOverlay = document.getElementById('heartOverlay');
 const heartButton = document.getElementById('heartButton');
@@ -30,6 +65,10 @@ let playingAudio = false;
 let heartTypingTimer = null;
 
 function initialize() {
+  if (introOverlay) {
+    introOverlay.remove();
+  }
+  document.body.style.overflow = 'auto';
   createStars(120);
   setupScrollReveal();
   bindEvents();
@@ -38,15 +77,6 @@ function initialize() {
 }
 
 function bindEvents() {
-  if (introSubmit && introInput) {
-    introSubmit.addEventListener('click', handleIntroSubmit);
-    introInput.addEventListener('keydown', (event) => {
-      if (event.key === 'Enter') {
-        handleIntroSubmit();
-      }
-    });
-  }
-
   if (heartButton) {
     heartButton.addEventListener('click', handleHeartButton);
   }
@@ -114,12 +144,6 @@ function isAcceptedName(value) {
   }
 
   return accepted.some((name) => value === name || value.endsWith(` ${name}`));
-}
-
-function setIntroFeedback(message) {
-  introFeedback.textContent = message;
-  introFeedback.classList.remove('correct');
-  introFeedback.classList.add('wrong');
 }
 
 function handleHeartButton() {
@@ -200,7 +224,7 @@ function createStars(count) {
     star.style.animationDuration = `${3 + Math.random() * 4}s`;
     star.style.animationDelay = `${Math.random() * 5}s`;
     star.setAttribute('aria-label', 'Estrela interativa');
-    star.title = 'Clique para uma mensagem';
+    star.title = 'Clique para revelar um poema';
     star.addEventListener('click', () => handleStarClick(i));
     fragment.appendChild(star);
   }
@@ -208,11 +232,9 @@ function createStars(count) {
   starScene.appendChild(fragment);
 }
 
-function handleStarClick() {
-  const available = starPhrases.filter((_, phraseIndex) => phraseIndex !== lastPhraseIndex);
-  const nextIndex = Math.floor(Math.random() * available.length);
-  const phrase = available[nextIndex];
-  lastPhraseIndex = starPhrases.indexOf(phrase);
+function handleStarClick(starIndex) {
+  const phrase = starPhrases[starIndex % starPhrases.length];
+  lastPhraseIndex = starIndex % starPhrases.length;
   starMessage.textContent = phrase;
   starMessage.classList.add('glow');
   window.clearTimeout(window.starTimeout);
