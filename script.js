@@ -97,12 +97,23 @@ function normalizeName(text) {
 }
 
 function isAcceptedName(value) {
-  const accepted = ['kimberly', 'kimberly vitoria', 'kimbely victoria', 'kim', 'kiki', 'kimbely', 'kimberly victoria', 'kim vitoria'];
+  const accepted = [
+    'maria eduarda',
+    'mariaeduarda',
+    'duda',
+    'madu',
+    'm eduarda',
+    'eduarda',
+    'maria d',
+    'm d',
+    'ma eduarda',
+    'madududa'
+  ];
   if (accepted.includes(value)) {
     return true;
   }
 
-  return value.includes('kim') || value.includes('kiki');
+  return accepted.some((name) => value === name || value.endsWith(` ${name}`));
 }
 
 function setIntroFeedback(message) {
